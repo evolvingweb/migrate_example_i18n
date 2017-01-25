@@ -35,7 +35,6 @@ process:
       source: tnid
     - plugin: skip_on_empty
       method: row
-  vid: vid
   title: title
   langcode: language
   uid: 'constants/uid_root'

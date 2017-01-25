@@ -30,7 +30,6 @@ destination:
   keys:
     - tnid
 process:
-  vid: vid
   title: title
   langcode:
     - plugin: static_map
