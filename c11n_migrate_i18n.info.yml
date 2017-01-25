@@ -1,0 +1,15 @@
+# Package info
+name: 'C11N: Migrate multi-language content'
+description: Module for performing site-specific migrations.
+type: module
+core: 8.x
+package: Custom
+
+# Dependencies
+dependencies:
+  - migrate
+  - migrate_drupal
+  - migrate_plus
+  - migrate_tools
+  - node
+  - taxonomy
