@@ -23,6 +23,7 @@ source:
     uid_root: 1
   keys:
     - tnid
+    - language
 # Migration destination
 destination:
   plugin: 'entity:node'
