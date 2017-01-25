@@ -28,7 +28,7 @@ destination:
   plugin: 'entity:node'
   default_bundle: article
   keys:
-    - nid
+    - tnid
 process:
   vid: vid
   title: title
