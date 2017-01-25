@@ -1,0 +1,51 @@
+# Migration file "article" nodes in base language from Drupal 7.
+
+# Migration metadata
+id: article_data
+label: Article translations from Drupal 7
+migration_group: default
+migration_tags:
+  - node
+  - article
+  - d7
+# Migration source
+source:
+  plugin: d7_article
+  node_type: article
+  # Specify the database from which data is to be read.
+  key: drupal_7
+  target: default
+  # node_type: article
+  # Static values for the migration.
+  #
+  # We can assign hard-coded values to certain properties using constants.
+  constants:
+    uid_root: 1
+  keys:
+    - nid
+# Migration destination
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+  keys:
+    - nid
+process:
+  vid: vid
+  title: title
+  langcode:
+    - plugin: static_map
+      source: language
+      map:
+        en: en
+        und: und
+      default_value: false
+    - plugin: skip_on_empty
+      method: row
+  uid: 'constants/uid_root'
+  sticky: sticky
+  status: status
+  promote: promote
+dependencies:
+  enforced:
+    module:
+      - c11n_migrate_i18n
