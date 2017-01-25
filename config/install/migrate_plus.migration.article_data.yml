@@ -22,13 +22,11 @@ source:
   constants:
     uid_root: 1
   keys:
-    - nid
+    - tnid
 # Migration destination
 destination:
   plugin: 'entity:node'
   default_bundle: article
-  keys:
-    - tnid
 process:
   title: title
   langcode:
