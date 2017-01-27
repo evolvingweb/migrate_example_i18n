@@ -1,9 +1,8 @@
-# Migration file "article" nodes in base language from Drupal 7.
+# Migration of "article" node data from Drupal 7.
 
 # Migration metadata
 id: article_data
-label: Article translations from Drupal 7
-migration_group: default
+label: Article data from Drupal 7
 migration_tags:
   - node
   - article
@@ -15,15 +14,13 @@ source:
   # Specify the database from which data is to be read.
   key: drupal_7
   target: default
-  # node_type: article
   # Static values for the migration.
   #
   # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
-  keys:
-    - tnid
-    - language
+  ids:
+    - nid
 # Migration destination
 destination:
   plugin: 'entity:node'
@@ -31,14 +28,39 @@ destination:
 process:
   title: title
   langcode:
-    - plugin: static_map
-      source: language
-      map:
-        en: en
-        und: und
-      default_value: false
-    - plugin: skip_on_empty
-      method: row
+    plugin: default_value
+    source: language
+    default_value: und
+  # Ignoring translations! The tricky part!
+  #
+  # The Drupal 7 version of the migration source Node does not
+  # support the "translations" parameter at this moment. Hence, even
+  # if you specify "translations: flase" (or omit that line), all
+  # nodes, including translations, are imported.
+  #
+  # To prevent this, I chose to override some methods in the
+  # D7_Article class, namely, the D7_Article::query() method.
+  #
+  # If you do not wish to write the D7_Article::query() method
+  # then you can use something like this commented lines below to
+  # ensure that translated nodes are NOT imported in this migration.
+  # In the commented lines below, I ensure that only 'en' and 'und'
+  # nodes are imported during this migration - for the rest, the
+  # entire row is skipped.
+  #
+  # In other words, do something to ensure that the following
+  # objective is met: "DO NOT import translations during this
+  # migration because we will import it in another migration". Phew!
+  #
+  # langcode:
+  #   - plugin: static_map
+  #     source: language
+  #     map:
+  #       en: en
+  #       und: und
+  #     default_value: false
+  #   - plugin: skip_on_empty
+  #     method: row
   uid: 'constants/uid_root'
   sticky: sticky
   status: status

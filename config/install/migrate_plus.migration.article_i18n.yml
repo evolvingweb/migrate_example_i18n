@@ -1,8 +1,8 @@
-# Migration file "article" node translations from Drupal 7.
+# Migration of "article" node translations from Drupal 7.
 
 # Migration metadata
 id: article_i18n
-label: Article base data from Drupal 7
+label: Article translations from Drupal 7
 migration_tags:
   - node
   - article
@@ -20,9 +20,9 @@ source:
   constants:
     uid_root: 1
   translations: true
-  keys:
-    - nid
-    - language
+  ids:
+    nid:
+      type: integer
 # Migration destination
 destination:
   plugin: 'entity:node'
