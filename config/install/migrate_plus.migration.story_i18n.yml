@@ -1,0 +1,52 @@
+# Migration file for "story" node translations from Drupal 6.
+
+# Migration metadata
+id: story_i18n
+label: Story translations from Drupal 6
+migration_tags:
+  - node
+  - story
+  - d6
+# Migration source
+source:
+  plugin: d6_story
+  node_type: story
+  translations: true
+  # Specify the database from which data is to be read.
+  key: drupal_6
+  target: default
+  # Specify source ID
+  ids:
+    id:
+      type: integer
+  # Static values for the migration.
+  #
+  # We can assign hard-coded values to certain properties using constants.
+  constants:
+    uid_root: 1
+    lid_und: 'und'
+# Migration destination
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+  translations: true
+process:
+  nid:
+    plugin: migration
+    source: tnid
+    migration: story_data
+  title: title
+  langcode:
+    plugin: default_value
+    source: language
+  uid: 'constants/uid_root'
+  sticky: sticky
+  status: status
+  promote: promote
+migration_dependencies:
+  required:
+    - story_data
+dependencies:
+  enforced:
+    module:
+      - c11n_migrate_i18n
