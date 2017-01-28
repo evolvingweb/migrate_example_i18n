@@ -1,0 +1,112 @@
+Name,Symbol,Atomic Number,Discovered By
+Hydrogen,H,1,Henry Cavendish
+Helium,He,2,"Sir William Ramsey, Nils Langet, P.T.Cleve"
+Lithium,Li,3,Johann Arfwedson
+Beryllium,Be,4,"Fredrich Wöhler, A.A.Bussy"
+Boron,B,5,"Sir H. Davy, J.L. Gay-Lussac, L.J. Thénard"
+Carbon,C,6,Known to the ancients
+Nitrogen,N,7,Daniel Rutherford
+Oxygen,O,8,"Joseph Priestly, Carl Wilhelm Scheele"
+Fluorine,F,9,Henri Moissan
+Neon,Ne,10,"Sir William Ramsey, M.W. Travers"
+Sodium,Na,11,Sir Humphrey Davy
+Magnesium,Mg,12,Sir Humphrey Davy
+Aluminum,Al,13,Hans Christian Oersted
+Silicon,Si,14,Jöns Berzelius
+Phosphorus,P,15,Hennig Brand
+Sulfur,S,16,Known to the ancients.
+Chlorine,Cl,17,Carl Wilhelm Scheele
+Argon,Ar,18,"Sir William Ramsey, Baron Rayleigh"
+Potassium,K,19,Sir Humphrey Davy
+Calcium,Ca,20,Sir Humphrey Davy
+Scandium,Sc,21,Lars Nilson
+Titanium,Ti,22,William Gregor
+Vanadium,V,23,Nils Sefström
+Chromium,Cr,24,Louis Vauquelin
+Manganese,Mn,25,Johann Gahn
+Iron,Fe,26,Known to the ancients.
+Cobalt,Co,27,George Brandt
+Nickel,Ni,28,Axel Cronstedt
+Copper,Cu,29,Known to the ancients.
+Zinc,Zn,30,Known to the ancients.
+Gallium,Ga,31,Paul Émile Lecoq de Boisbaudran
+Germanium,Ge,32,Clemens Winkler
+Arsenic,As,33,Known to the ancients.
+Selenium,Se,34,Jöns Berzelius
+Bromine,Br,35,Antoine J. Balard
+Krypton,Kr,36,"Sir William Ramsey, M.W. Travers"
+Rubidium,Rb,37,"R. Bunsen, G. Kirchoff"
+Strontium,Sr,38,A. Crawford
+Yttrium,Y,39,Johann Gadolin
+Zirconium,Zr,40,Martin Klaproth
+Niobium,Nb,41,Charles Hatchet
+Molybdenum,Mo,42,Carl Wilhelm Scheele
+Technetium,Tc,43,"Carlo Perrier, Émillo Segrè"
+Ruthenium,Ru,44,Karl Klaus
+Rhodium,Rh,45,William Wollaston
+Palladium,Pd,46,William Wollaston
+Silver,Ag,47,Known to the ancients.
+Cadmium,Cd,48,Fredrich Stromeyer
+Indium,In,49,"Ferdinand Reich, T. Richter"
+Tin,Sn,50,Known to the ancients.
+Antimony,Sb,51,Known to the ancients.
+Tellurium,Te,52,Franz Müller von Reichenstein
+Iodine,I,53,Bernard Courtois
+Xenon,Xe,54,Sir William Ramsay; M. W. Travers
+Cesium,Cs,55,"Gustov Kirchoff, Robert Bunsen"
+Barium,Ba,56,Sir Humphrey Davy
+Lanthanum,La,57,Carl Mosander
+Cerium,Ce,58,"W. von Hisinger, J. Berzelius, M. Klaproth"
+Praseodymium,Pr,59,C.F. Aver von Welsbach
+Neodymium,Nd,60,C.F. Aver von Welsbach
+Promethium,Pm,61,"J.A. Marinsky, L.E. Glendenin, C.D. Coryell"
+Samarium,Sm,62,Paul Émile Lecoq de Boisbaudran
+Europium,Eu,63,Eugène Demarçay
+Gadolinium,Gd,64,Jean de Marignac
+Terbium,Tb,65,Carl Mosander
+Dysprosium,Dy,66,Paul Émile Lecoq de Boisbaudran
+Holmium,Ho,67,J.L. Soret
+Erbium,Er,68,Carl Mosander
+Thulium,Tm,69,Per Theodor Cleve
+Ytterbium,Yb,70,Jean de Marignac
+Lutetium,Lu,71,Georges Urbain
+Hafnium,Hf,72,"Dirk Coster, Georg von Hevesy"
+Tantalum,Ta,73,Anders Ekeberg
+Tungsten,W,74,Fausto and Juan José de Elhuyar
+Rhenium,Re,75,"Walter Noddack, Ida Tacke, Otto Berg"
+Osmium,Os,76,Smithson Tenant
+Iridium,Ir,77,"S.Tenant, A.F.Fourcory, L.N.Vauquelin, H.V.Collet-Descoltils"
+Platinum,Pt,78,Julius Scaliger
+Gold,Au,79,Known to the ancients.
+Mercury,Hg,80,Known to the ancients.
+Thallium,Tl,81,Sir William Crookes
+Lead,Pb,82,Known to the ancients.
+Bismuth,Bi,83,Known to the ancients.
+Polonium,Po,84,Pierre and Marie Curie
+Astatine,At,85,"D.R.Corson, K.R.MacKenzie, E.Segré"
+Radon,Rn,86,Fredrich Ernst Dorn
+Francium,Fr,87,Marguerite Derey
+Radium,Ra,88,Pierre and Marie Curie
+Actinium,Ac,89,André Debierne
+Thorium,Th,90,Jöns Berzelius
+Protactinium,Pa,91,"Fredrich Soddy, John Cranston, Otto Hahn, Lise Meitner"
+Uranium,U,92,Martin Klaproth
+Neptunium,Np,93,"E.M. McMillan, P.H. Abelson"
+Plutonium,Pu,94,"G.T.Seaborg, J.W.Kennedy, E.M.McMillan, A.C.Wohl"
+Americium,Am,95,"G.T.Seaborg, R.A.James, L.O.Morgan, A.Ghiorso"
+Curium,Cm,96,"G.T.Seaborg, R.A.James, A.Ghiorso"
+Berkelium,Bk,97,"G.T.Seaborg, S.G.Tompson, A.Ghiorso"
+Californium,Cf,98,"G.T.Seaborg, S.G.Tompson, A.Ghiorso, K.Street Jr."
+Einsteinium,Es,99,"Argonne, Los Alamos, U of Calif"
+Fermium,Fm,100,"Argonne, Los Alamos, U of Calif"
+Mendelevium,Md,101,"G.T.Seaborg, S.G.Tompson, A.Ghiorso, K.Street Jr."
+Nobelium,No,102,Nobel Institute for Physics
+Lawrencium,Lr,103,"A.Ghiorso, T.Sikkeland, A.E.Larsh, R.M.Latimer"
+Rutherfordium,Rf,104,"A. Ghiorso, et al"
+Hahnium,Ha,105,"A. Ghiorso, et al"
+Seaborgium,Sg,106,Soviet Nuclear Research/ U. of Cal at Berkeley
+Nielsbohrium,Ns,107,Heavy Ion Research Laboratory (HIRL)
+Hessium,Hs,108,Heavy Ion Research Laboratory (HIRL)
+Mietnerium,Mt,109,Heavy Ion Research Laboratory (HIRL)
+Unnunnilium,Unn,110,Heavy Ion Research Laboratory (HIRL)
+Unnununium,Unu,111,Heavy Ion Research Laboratory (HIRL)
