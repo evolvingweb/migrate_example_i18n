@@ -37,9 +37,13 @@ destination:
   translations: true
 process:
   nid:
-    plugin: migration
-    source: Simbolo
-    migration: element_en
+    -
+      plugin: migration
+      source: Simbolo
+      migration: element_en
+    -
+      plugin: skip_on_empty
+      method: row
   title: Nombre
   langcode: constants/lang_es
   uid: constants/uid_root

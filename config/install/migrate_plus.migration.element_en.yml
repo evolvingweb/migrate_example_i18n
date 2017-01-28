@@ -41,6 +41,12 @@ process:
   sticky: constants/bool_0
   status: constants/bool_1
   promote: constants/bool_0
+  field_element_symbol: Symbol
+  field_element_discoverer:
+    -
+      plugin: explode
+      delimiter: ', '
+      source: Discovered By
 dependencies:
   enforced:
     module:
