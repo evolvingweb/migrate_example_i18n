@@ -38,6 +38,7 @@ process:
   sticky: sticky
   status: status
   promote: promote
+  body: body
 dependencies:
   enforced:
     module:

@@ -43,6 +43,7 @@ process:
   sticky: sticky
   status: status
   promote: promote
+  body: body
 migration_dependencies:
   required:
     - story_data

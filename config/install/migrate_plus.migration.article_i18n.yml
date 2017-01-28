@@ -41,6 +41,7 @@ process:
   sticky: sticky
   status: status
   promote: promote
+  body: body
 migration_dependencies:
   required:
     - article_data
