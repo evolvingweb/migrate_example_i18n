@@ -11,5 +11,6 @@ dependencies:
   - migrate_drupal
   - migrate_plus
   - migrate_tools
+  - migrate_source_csv
   - node
   - taxonomy
