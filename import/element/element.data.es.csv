@@ -1,4 +1,4 @@
-S韒bolo,Nombre,N鷐ero at髆ico,Masa at髆ica
+Simbolo,Nombre,Numero atomico,Masa atomica
 H,Hidrogeno,1,1.00794
 Li,Litio,3,6.941
 Na,Sodio,11,22.989768
@@ -23,7 +23,7 @@ Zr,Zirconio,40,91.22
 Hf,Hafnio,72,178.49
 V,Vanadio,23,50.942
 Nb,Niobio,41,92.906
-Ta,T醤talo,73,180.94
+Ta,T谩ntalo,73,180.94
 Cr,Cromo,24,51.996
 Mo,Molibdeno,42,95.94
 W,Tungsteno,74,183.85
@@ -64,7 +64,7 @@ Ha,Hahnio,105,262
 Co,Cobalto,27,58.9332
 Rh,Rodio,45,102.905
 Ir,Iridio,77,192.2
-Ni,N韖uel,28,58.71
+Ni,N铆quel,28,58.71
 Pd,Paladio,46,106.4
 Pt,Platino,78,195.09
 Cu,Cobre,29,63.54
@@ -81,26 +81,26 @@ Tl,Talio,81,204.37
 C,Carbono,6,12.01115
 Si,Silicio,14,28.086
 Ge,Germanio,32,72.59
-Sn,Esta駉,50,118.69
+Sn,Esta帽o,50,118.69
 Pb,Plomo,82,207.19
-N,Nitr骻eno,7,14.0067
-P,F髎foro,15,30.9738
-As,Ars閚ico,33,74.9216
+N,Nitr贸geno,7,14.0067
+P,F贸sforo,15,30.9738
+As,Ars茅nico,33,74.9216
 Sb,Antimonio,51,121.75
 Bi,Bismuto,83,208.96
-O,Ox韌eno,8,15.9994
+O,Ox铆geno,8,15.9994
 S,Azufre,16,32.064
 Se,Selenio,34,78.96
 Te,Telurio,52,127.6
 Po,Polonio,84,209
-F,Fl鷒r,9,18.998403
+F,Fl煤or,9,18.998403
 Cl,Cloro,17,35.453
 Br,Bromo,35,79.904
 I,Yodo,53,126.9045
 At,Astato,85,210
 He,Helio,2,4.0026
-Ne,Ne髇,10,20.183
-Ar,Arg髇,18,39.948
-Kr,Kript髇,36,83.8
-Xe,Xen髇,54,131.3
-Rn,Rad髇,86,222
+Ne,Ne贸n,10,20.183
+Ar,Arg贸n,18,39.948
+Kr,Kript贸n,36,83.8
+Xe,Xen贸n,54,131.3
+Rn,Rad贸n,86,222

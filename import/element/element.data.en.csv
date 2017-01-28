@@ -2,8 +2,8 @@ Name,Symbol,Atomic Number,Discovered By
 Hydrogen,H,1,Henry Cavendish
 Helium,He,2,"Sir William Ramsey, Nils Langet, P.T.Cleve"
 Lithium,Li,3,Johann Arfwedson
-Beryllium,Be,4,"Fredrich Wöhler, A.A.Bussy"
-Boron,B,5,"Sir H. Davy, J.L. Gay-Lussac, L.J. Thénard"
+Beryllium,Be,4,"Fredrich WÃ¶hler, A.A.Bussy"
+Boron,B,5,"Sir H. Davy, J.L. Gay-Lussac, L.J. ThÃ©nard"
 Carbon,C,6,Known to the ancients
 Nitrogen,N,7,Daniel Rutherford
 Oxygen,O,8,"Joseph Priestly, Carl Wilhelm Scheele"
@@ -12,7 +12,7 @@ Neon,Ne,10,"Sir William Ramsey, M.W. Travers"
 Sodium,Na,11,Sir Humphrey Davy
 Magnesium,Mg,12,Sir Humphrey Davy
 Aluminum,Al,13,Hans Christian Oersted
-Silicon,Si,14,Jöns Berzelius
+Silicon,Si,14,JÃ¶ns Berzelius
 Phosphorus,P,15,Hennig Brand
 Sulfur,S,16,Known to the ancients.
 Chlorine,Cl,17,Carl Wilhelm Scheele
@@ -21,7 +21,7 @@ Potassium,K,19,Sir Humphrey Davy
 Calcium,Ca,20,Sir Humphrey Davy
 Scandium,Sc,21,Lars Nilson
 Titanium,Ti,22,William Gregor
-Vanadium,V,23,Nils Sefström
+Vanadium,V,23,Nils SefstrÃ¶m
 Chromium,Cr,24,Louis Vauquelin
 Manganese,Mn,25,Johann Gahn
 Iron,Fe,26,Known to the ancients.
@@ -29,10 +29,10 @@ Cobalt,Co,27,George Brandt
 Nickel,Ni,28,Axel Cronstedt
 Copper,Cu,29,Known to the ancients.
 Zinc,Zn,30,Known to the ancients.
-Gallium,Ga,31,Paul Émile Lecoq de Boisbaudran
+Gallium,Ga,31,Paul Ã‰mile Lecoq de Boisbaudran
 Germanium,Ge,32,Clemens Winkler
 Arsenic,As,33,Known to the ancients.
-Selenium,Se,34,Jöns Berzelius
+Selenium,Se,34,JÃ¶ns Berzelius
 Bromine,Br,35,Antoine J. Balard
 Krypton,Kr,36,"Sir William Ramsey, M.W. Travers"
 Rubidium,Rb,37,"R. Bunsen, G. Kirchoff"
@@ -41,7 +41,7 @@ Yttrium,Y,39,Johann Gadolin
 Zirconium,Zr,40,Martin Klaproth
 Niobium,Nb,41,Charles Hatchet
 Molybdenum,Mo,42,Carl Wilhelm Scheele
-Technetium,Tc,43,"Carlo Perrier, Émillo Segrè"
+Technetium,Tc,43,"Carlo Perrier, Ã‰millo SegrÃ¨"
 Ruthenium,Ru,44,Karl Klaus
 Rhodium,Rh,45,William Wollaston
 Palladium,Pd,46,William Wollaston
@@ -50,7 +50,7 @@ Cadmium,Cd,48,Fredrich Stromeyer
 Indium,In,49,"Ferdinand Reich, T. Richter"
 Tin,Sn,50,Known to the ancients.
 Antimony,Sb,51,Known to the ancients.
-Tellurium,Te,52,Franz Müller von Reichenstein
+Tellurium,Te,52,Franz MÃ¼ller von Reichenstein
 Iodine,I,53,Bernard Courtois
 Xenon,Xe,54,Sir William Ramsay; M. W. Travers
 Cesium,Cs,55,"Gustov Kirchoff, Robert Bunsen"
@@ -60,11 +60,11 @@ Cerium,Ce,58,"W. von Hisinger, J. Berzelius, M. Klaproth"
 Praseodymium,Pr,59,C.F. Aver von Welsbach
 Neodymium,Nd,60,C.F. Aver von Welsbach
 Promethium,Pm,61,"J.A. Marinsky, L.E. Glendenin, C.D. Coryell"
-Samarium,Sm,62,Paul Émile Lecoq de Boisbaudran
-Europium,Eu,63,Eugène Demarçay
+Samarium,Sm,62,Paul Ã‰mile Lecoq de Boisbaudran
+Europium,Eu,63,EugÃ¨ne DemarÃ§ay
 Gadolinium,Gd,64,Jean de Marignac
 Terbium,Tb,65,Carl Mosander
-Dysprosium,Dy,66,Paul Émile Lecoq de Boisbaudran
+Dysprosium,Dy,66,Paul Ã‰mile Lecoq de Boisbaudran
 Holmium,Ho,67,J.L. Soret
 Erbium,Er,68,Carl Mosander
 Thulium,Tm,69,Per Theodor Cleve
@@ -72,7 +72,7 @@ Ytterbium,Yb,70,Jean de Marignac
 Lutetium,Lu,71,Georges Urbain
 Hafnium,Hf,72,"Dirk Coster, Georg von Hevesy"
 Tantalum,Ta,73,Anders Ekeberg
-Tungsten,W,74,Fausto and Juan José de Elhuyar
+Tungsten,W,74,Fausto and Juan JosÃ© de Elhuyar
 Rhenium,Re,75,"Walter Noddack, Ida Tacke, Otto Berg"
 Osmium,Os,76,Smithson Tenant
 Iridium,Ir,77,"S.Tenant, A.F.Fourcory, L.N.Vauquelin, H.V.Collet-Descoltils"
@@ -83,12 +83,12 @@ Thallium,Tl,81,Sir William Crookes
 Lead,Pb,82,Known to the ancients.
 Bismuth,Bi,83,Known to the ancients.
 Polonium,Po,84,Pierre and Marie Curie
-Astatine,At,85,"D.R.Corson, K.R.MacKenzie, E.Segré"
+Astatine,At,85,"D.R.Corson, K.R.MacKenzie, E.SegrÃ©"
 Radon,Rn,86,Fredrich Ernst Dorn
 Francium,Fr,87,Marguerite Derey
 Radium,Ra,88,Pierre and Marie Curie
-Actinium,Ac,89,André Debierne
-Thorium,Th,90,Jöns Berzelius
+Actinium,Ac,89,AndrÃ© Debierne
+Thorium,Th,90,JÃ¶ns Berzelius
 Protactinium,Pa,91,"Fredrich Soddy, John Cranston, Otto Hahn, Lise Meitner"
 Uranium,U,92,Martin Klaproth
 Neptunium,Np,93,"E.M. McMillan, P.H. Abelson"
