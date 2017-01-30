@@ -2,7 +2,6 @@
 
 namespace Drupal\c11n_migrate_i18n\Plugin\migrate\source;
 
-use \Drupal\migrate\Row;
 use \Drupal\node\Plugin\migrate\source\d6\Node;
 
 /**
