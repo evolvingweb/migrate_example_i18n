@@ -1,7 +1,7 @@
 # Migration file for "story" node translations from Drupal 6.
 
 # Migration metadata
-id: story_i18n
+id: hybrid_i18n
 label: Story translations from Drupal 6
 migration_tags:
   - node

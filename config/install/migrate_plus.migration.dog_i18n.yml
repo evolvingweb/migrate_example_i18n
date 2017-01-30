@@ -1,44 +1,50 @@
-# Migration file for "story" node data from Drupal 6.
+# Migration of "article" node translations from Drupal 7.
 
 # Migration metadata
-id: story_data
-label: Story data from Drupal 6
+id: dog_i18n
+label: Dog translations from Drupal 7
 migration_tags:
   - node
-  - story
-  - d6
+  - article
+  - d7
 # Migration source
 source:
-  plugin: d6_story
-  node_type: story
+  plugin: d7_article
+  node_type: article
   # Specify the database from which data is to be read.
-  key: drupal_6
+  key: drupal_7
   target: default
   # Static values for the migration.
   #
   # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
-    lid_und: 'und'
-  # Specify source ID
+  translations: true
   ids:
-    id:
+    nid:
       type: integer
 # Migration destination
 destination:
   plugin: 'entity:node'
   default_bundle: article
+  translations: true
 process:
+  nid:
+    - plugin: migration
+      migration: article_data
+      source: tnid
+    - plugin: skip_on_empty
+      method: row
   title: title
-  langcode:
-    plugin: default_value
-    source: language
-    default_value: 'constants/lid_und'
+  langcode: language
   uid: 'constants/uid_root'
   sticky: sticky
   status: status
   promote: promote
   body: body
+migration_dependencies:
+  required:
+    - dog_data
 dependencies:
   enforced:
     module:

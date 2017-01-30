@@ -1,8 +1,11 @@
 # Migration of "article" node data from Drupal 7.
+#
+# This file demonstrates migration of content translated with
+# the 'content_translation' module.
 
 # Migration metadata
-id: article_data
-label: Article data from Drupal 7
+id: dog_data
+label: Dog data from Drupal 7
 migration_tags:
   - node
   - article
