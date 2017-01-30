@@ -15,7 +15,7 @@ source:
   plugin: d7_article
   node_type: article
   # Specify the database from which data is to be read.
-  key: drupal_7
+  key: drupal_7a
   target: default
   # Static values for the migration.
   #

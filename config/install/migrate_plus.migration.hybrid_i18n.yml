@@ -34,7 +34,7 @@ process:
   nid:
     plugin: migration
     source: tnid
-    migration: story_data
+    migration: hybrid_data
   title: title
   langcode:
     plugin: default_value
@@ -46,7 +46,7 @@ process:
   body: body
 migration_dependencies:
   required:
-    - story_data
+    - hybrid_data
 dependencies:
   enforced:
     module:
