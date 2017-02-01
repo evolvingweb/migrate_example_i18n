@@ -9,7 +9,7 @@ migration_tags:
   - d7
 # Migration source
 source:
-  plugin: d7_article
+  plugin: d7_dog
   node_type: article
   # Specify the database from which data is to be read.
   key: drupal_7a

@@ -9,7 +9,7 @@ migration_tags:
   - d6
 # Migration source
 source:
-  plugin: d6_story
+  plugin: d6_hybrid
   node_type: story
   translations: true
   # Specify the database from which data is to be read.

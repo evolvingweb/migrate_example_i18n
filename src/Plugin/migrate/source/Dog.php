@@ -9,10 +9,10 @@ use \Drupal\node\Plugin\migrate\source\d7\Node;
  * Drupal 7 node (article) source from database.
  *
  * @MigrateSource(
- *   id = "d7_article"
+ *   id = "d7_dog"
  * )
  */
-class D7_Article extends Node {
+class Dog extends Node {
 
   /**
    * We override this method so that we can add support

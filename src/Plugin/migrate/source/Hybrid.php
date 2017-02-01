@@ -8,9 +8,9 @@ use \Drupal\node\Plugin\migrate\source\d6\Node;
  * Drupal 6 node (story) source from database.
  *
  * @MigrateSource(
- *   id = "d6_story"
+ *   id = "d6_hybrid"
  * )
  */
-class D6_Story extends Node {
+class Hybrid extends Node {
 
 }
