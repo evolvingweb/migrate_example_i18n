@@ -1,0 +1,54 @@
+# Migration of "article" node translations from Drupal 7.
+#
+# This file demonstrates migration of content translated with
+# the 'entity_translation' module.
+
+# Migration metadata
+id: creature_i18n
+label: Creature translations from Drupal 7
+migration_tags:
+  - node
+  - article
+  - d7
+# Migration source
+source:
+  plugin: d7_creature
+  node_type: article
+  translations: true
+  # Specify the database from which data is to be read.
+  key: drupal_7b
+  target: default
+  # Static values for the migration.
+  #
+  # We can assign hard-coded values to certain properties using constants.
+  constants:
+    uid_root: 1
+  ids:
+    - nid
+    - language
+# Migration destination
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+  translations: true
+process:
+  nid:
+    - plugin: migration
+      migration: creature_data
+      source: nid
+    - plugin: skip_on_empty
+      method: row
+  title: title_field
+  langcode: language
+  uid: 'constants/uid_root'
+  sticky: sticky
+  status: status
+  promote: promote
+  body: body
+migration_dependencies:
+  required:
+    - creature_data
+dependencies:
+  enforced:
+    module:
+      - c11n_migrate_i18n
