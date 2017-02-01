@@ -48,4 +48,15 @@ class Dog extends Node {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+      // Allow 'tnid' to uniquely identify translation sets.
+      if (0 == $row->getSourceProperty('tnid')) {
+        $row->setSourceProperty('tnid', $row->getSourceProperty('nid'));
+      }
+      return parent::prepareRow($row);
+   }
+
 }
