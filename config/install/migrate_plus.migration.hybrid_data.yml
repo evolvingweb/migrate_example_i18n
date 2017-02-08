@@ -39,6 +39,7 @@ process:
   status: status
   promote: promote
   body: body
+  field_sire: field_sire
 dependencies:
   enforced:
     module:
