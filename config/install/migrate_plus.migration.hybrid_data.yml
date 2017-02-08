@@ -13,7 +13,6 @@ source:
   node_type: story
   # Specify the database from which data is to be read.
   key: drupal_6
-  target: default
   # Static values for the migration.
   #
   # We can assign hard-coded values to certain properties using constants.
