@@ -20,10 +20,6 @@ source:
   constants:
     uid_root: 1
     body_format: full_html
-  # Specify source ID
-  ids:
-    id:
-      type: integer
 # Migration destination
 destination:
   plugin: 'entity:node'
