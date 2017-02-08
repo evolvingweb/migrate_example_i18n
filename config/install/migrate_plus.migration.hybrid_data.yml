@@ -20,12 +20,13 @@ source:
   constants:
     uid_root: 1
     body_format: full_html
+    content_type: article
 # Migration destination
 destination:
   plugin: 'entity:node'
-  default_bundle: article
 process:
   title: title
+  type: constants/content_type
   langcode:
     plugin: default_value
     source: language
