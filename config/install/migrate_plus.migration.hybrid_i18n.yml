@@ -9,41 +9,36 @@ migration_tags:
   - d6
 # Migration source
 source:
-  plugin: d6_hybrid
+  plugin: d6_node
   node_type: story
   translations: true
   # Specify the database from which data is to be read.
   key: drupal_6
-  target: default
-  # Specify source ID
-  ids:
-    id:
-      type: integer
   # Static values for the migration.
   #
   # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
-    lid_und: 'und'
+    body_format: full_html
+    content_type: article
 # Migration destination
 destination:
   plugin: 'entity:node'
-  default_bundle: article
   translations: true
 process:
   nid:
     plugin: migration
     source: tnid
     migration: hybrid_data
+  type: constants/content_type
   title: title
-  langcode:
-    plugin: default_value
-    source: language
+  langcode: language
   uid: 'constants/uid_root'
   sticky: sticky
   status: status
   promote: promote
-  body: body
+  'body/format': constants/body_format
+  'body/value': body
   field_sire: field_sire
 migration_dependencies:
   required:
