@@ -19,6 +19,7 @@ source:
   # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
+    body_format: full_html
   # Specify source ID
   ids:
     id:
@@ -37,7 +38,8 @@ process:
   sticky: sticky
   status: status
   promote: promote
-  body: body
+  'body/format': constants/body_format
+  'body/value': body
   field_sire: field_sire
 dependencies:
   enforced:
