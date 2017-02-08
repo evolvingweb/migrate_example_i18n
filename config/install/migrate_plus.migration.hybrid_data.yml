@@ -19,7 +19,6 @@ source:
   # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
-    lid_und: 'und'
   # Specify source ID
   ids:
     id:
@@ -33,7 +32,7 @@ process:
   langcode:
     plugin: default_value
     source: language
-    default_value: 'constants/lid_und'
+    default_value: und
   uid: 'constants/uid_root'
   sticky: sticky
   status: status
