@@ -22,13 +22,14 @@ source:
   # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
+    node_article: 'article'
   ids:
     - nid
 # Migration destination
 destination:
   plugin: 'entity:node'
-  default_bundle: article
 process:
+  type: constants/node_article
   title: title
   langcode:
     plugin: default_value

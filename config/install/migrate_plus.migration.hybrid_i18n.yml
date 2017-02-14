@@ -20,7 +20,7 @@ source:
   constants:
     uid_root: 1
     body_format: full_html
-    content_type: article
+    node_article: article
 # Migration destination
 destination:
   plugin: 'entity:node'
@@ -30,10 +30,10 @@ process:
     plugin: migration
     source: tnid
     migration: hybrid_base
-  type: constants/content_type
+  type: constants/node_article
   title: title
   langcode: language
-  uid: 'constants/uid_root'
+  uid: constants/uid_root
   sticky: sticky
   status: status
   promote: promote

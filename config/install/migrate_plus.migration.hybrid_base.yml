@@ -18,19 +18,19 @@ source:
   # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
+    node_article: article
     body_format: full_html
-    content_type: article
 # Migration destination
 destination:
   plugin: 'entity:node'
 process:
   title: title
-  type: constants/content_type
+  type: constants/node_article
   langcode:
     plugin: default_value
     source: language
     default_value: und
-  uid: 'constants/uid_root'
+  uid: constants/uid_root
   sticky: sticky
   status: status
   promote: promote

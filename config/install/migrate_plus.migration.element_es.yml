@@ -28,12 +28,12 @@ source:
   constants:
     lang_es: es
     uid_root: 1
+    node_element: 'element'
     bool_0: 0
     bool_1: 1
 # Migration destination
 destination:
   plugin: 'entity:node'
-  default_bundle: element
   translations: true
 process:
   nid:
@@ -44,6 +44,7 @@ process:
     -
       plugin: skip_on_empty
       method: row
+  type: constants/node_element
   title: Nombre
   langcode: constants/lang_es
   uid: constants/uid_root
