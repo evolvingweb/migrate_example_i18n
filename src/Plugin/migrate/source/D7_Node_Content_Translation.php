@@ -10,10 +10,10 @@ use \Drupal\node\Plugin\migrate\source\d7\Node;
  * Drupal 7 node (article) source from database.
  *
  * @MigrateSource(
- *   id = "d7_dog"
+ *   id = "d7_node_content_translation"
  * )
  */
-class Dog extends Node {
+class D7_Node_Content_Translation extends Node {
 
   /**
    * We override this method so that we can add support

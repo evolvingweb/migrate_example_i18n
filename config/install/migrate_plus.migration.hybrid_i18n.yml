@@ -29,7 +29,7 @@ process:
   nid:
     plugin: migration
     source: tnid
-    migration: hybrid_data
+    migration: hybrid_base
   type: constants/content_type
   title: title
   langcode: language
@@ -42,7 +42,7 @@ process:
   field_sire: field_sire
 migration_dependencies:
   required:
-    - hybrid_data
+    - hybrid_base
 dependencies:
   enforced:
     module:

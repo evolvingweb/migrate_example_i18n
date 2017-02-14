@@ -1,7 +1,7 @@
 # Migration file for "story" node data from Drupal 6.
 
 # Migration metadata
-id: hybrid_data
+id: hybrid_base
 label: Story data from Drupal 6
 migration_tags:
   - node

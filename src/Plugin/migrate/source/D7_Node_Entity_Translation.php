@@ -10,10 +10,10 @@ use \Drupal\migrate\Row;
  * Drupal 7 node (article) source from database.
  *
  * @MigrateSource(
- *   id = "d7_creature"
+ *   id = "d7_node_entity_translation"
  * )
  */
-class Creature extends Node {
+class D7_Node_Entity_Translation extends Node {
 
   public function query() {
 

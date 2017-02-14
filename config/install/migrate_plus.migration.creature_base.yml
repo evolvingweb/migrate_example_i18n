@@ -4,15 +4,15 @@
 # the 'entity_translation' module.
 
 # Migration metadata
-id: creature_data
-label: Creature data from Drupal 7
+id: creature_base
+label: Creature base data from Drupal 7
 migration_tags:
   - node
   - article
   - d7
 # Migration source
 source:
-  plugin: d7_creature
+  plugin: d7_node_entity_translation
   node_type: article
   # Specify the database from which data is to be read.
   key: drupal_7b

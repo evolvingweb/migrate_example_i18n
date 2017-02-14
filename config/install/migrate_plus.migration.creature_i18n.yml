@@ -12,7 +12,7 @@ migration_tags:
   - d7
 # Migration source
 source:
-  plugin: d7_creature
+  plugin: d7_node_entity_translation
   node_type: article
   translations: true
   # Specify the database from which data is to be read.
@@ -34,7 +34,7 @@ destination:
 process:
   nid:
     - plugin: migration
-      migration: creature_data
+      migration: creature_base
       source: nid
     - plugin: skip_on_empty
       method: row
@@ -47,7 +47,7 @@ process:
   body: body
 migration_dependencies:
   required:
-    - creature_data
+    - creature_base
 dependencies:
   enforced:
     module:

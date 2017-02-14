@@ -9,7 +9,7 @@ migration_tags:
   - d7
 # Migration source
 source:
-  plugin: d7_dog
+  plugin: d7_node_content_translation
   node_type: article
   # Specify the database from which data is to be read.
   key: drupal_7a
@@ -31,10 +31,8 @@ destination:
 process:
   nid:
     - plugin: migration
-      migration: dog_data
+      migration: dog_base
       source: tnid
-    - plugin: skip_on_empty
-      method: row
   title: title
   langcode: language
   uid: 'constants/uid_root'
@@ -44,7 +42,7 @@ process:
   body: body
 migration_dependencies:
   required:
-    - dog_data
+    - dog_base
 dependencies:
   enforced:
     module:
