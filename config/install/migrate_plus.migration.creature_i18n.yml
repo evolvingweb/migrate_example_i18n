@@ -33,11 +33,9 @@ destination:
   translations: true
 process:
   nid:
-    - plugin: migration
-      migration: creature_base
-      source: nid
-    - plugin: skip_on_empty
-      method: row
+    plugin: migration
+    migration: creature_base
+    source: nid
   type: constants/node_article
   title: title_field
   langcode: language
