@@ -64,6 +64,7 @@ class D7NodeEntityTranslation extends Node {
         'created' => 'created',
         'timestamp' => 'changed',
         'vid' => 'revision_id',
+        'tnid' => 'entity_id',
       ];
 
       // Remove certain fields which we would override with
@@ -74,14 +75,8 @@ class D7NodeEntityTranslation extends Node {
         $query->addField('et', $column_name, $column_alias);
       }
 
-      // Ensure that we get the proper 'tnid'.
-      unset ($field_query_coll['tnid']);
-      $query->addField('n', 'nid', 'tnid');
-
       // Make sure we only read translations.
       $query->condition('et.source', '', '<>');
-
-      \Drupal::logger('migrate')->debug($query);
 
     }
 
