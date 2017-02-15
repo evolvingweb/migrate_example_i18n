@@ -17,7 +17,7 @@ use \Drupal\migrate\Row;
  *   id = "d7_node_entity_translation"
  * )
  */
-class D7_Node_Entity_Translation extends Node {
+class D7NodeEntityTranslation extends Node {
 
   /**
    * This method is responsible for generating a query
