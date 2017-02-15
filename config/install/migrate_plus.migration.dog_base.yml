@@ -20,7 +20,7 @@ source:
   # nodes, including translations, are imported.
   #
   # To prevent this, I chose to write the method
-  # D7_Node_Content_Translation::query().
+  # D7NodeContentTranslation::query().
   plugin: d7_node_content_translation
   node_type: article
   # Specify the database from which data is to be read.

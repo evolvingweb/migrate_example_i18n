@@ -19,8 +19,8 @@ source:
   # if you specify "translations: flase" (or omit that line), all
   # nodes, including translations, are imported.
   #
-  # To prevent this, I chose to override some methods in the
-  # D7_Article class, namely, the D7_Article::query() method.
+  # To prevent this, I chose to write the method
+  # D7NodeEntityTranslation::query().
   plugin: d7_node_entity_translation
   node_type: article
   # Specify the database from which data is to be read.
