@@ -1,4 +1,14 @@
 # Migration file for "story" node translations from Drupal 6.
+#
+# This file demonstrates migration of content translated with
+# the 'content_translation' module.
+#
+# A detailed description of many configuration parameters
+# has been provided in this migration. Thus, if you do not know
+# where to start, this would be a good place to get started.
+# Also refer to the 'hybrid_base' migration first because it
+# contains descriptions of certain other parameters which have
+# not being described in this migration to avoid repetition.
 
 # Migration metadata
 id: hybrid_i18n
@@ -11,12 +21,23 @@ migration_tags:
 source:
   plugin: d6_node
   node_type: story
+  # We deal only with translations in this migration.
+  #
+  # The base migration had the objective of reading only
+  # language-neutral content and base translations. Hence,
+  # we did not specify anything for the 'translations'
+  # parameter (which defaults to 'false').
+  #
+  # However, in this migration, we already have the base
+  # translations and we will only be reading source nodes
+  # which are translations. To do this, we specify the
+  # 'translations' parameter, which is then used by the
+  # source plugin to read only nodes which are translations
+  # of other nodes.
   translations: true
-  # Specify the database from which data is to be read.
+  # Specify source database.
   key: drupal_6
   # Static values for the migration.
-  #
-  # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
     body_format: full_html
@@ -24,25 +45,48 @@ source:
 # Migration destination
 destination:
   plugin: 'entity:node'
+  # Important! Create translations for existing nodes.
+  #
+  # We inform the destination plugin that instead of creating
+  # fresh nodes for every record, we are wanting to create a
+  # translation for every record.
   translations: true
+# Migration processes
 process:
+  # Attach the translation to the already migrated base node.
+  #
+  # Since we are migrating only translations, our objective
+  # is to attach the translation to the base node which was
+  # already migrated during the 'base' migration. To do this,
+  # we use the 'migration' plugin to tell Drupal that instead
+  # of creating a new node, Drupal is supposed to create a
+  # translation for the node identified by the 'nid' property.
   nid:
     plugin: migration
     source: tnid
     migration: hybrid_base
   type: constants/node_article
-  title: title
   langcode: language
+  title: title
+  'body/format': constants/body_format
+  'body/value': body
   uid: constants/uid_root
   sticky: sticky
   status: status
   promote: promote
-  'body/format': constants/body_format
-  'body/value': body
-  field_sire: field_sire
+# Migration dependencies
+#
+# Since this migration aims at attaching translations to nodes
+# already created by the 'base' migration, we must ensure that
+# the base migration has already been executed when the migration
+# for the translated data is executed. Hence, we tell Drupal that
+# this migration is to be executed after the migrations mentioned
+# in the 'migration_dependencies' parameter. That way, the base
+# nodes will always exist when the translations are being migrated.
 migration_dependencies:
   required:
     - hybrid_base
+# General dependencies
 dependencies:
   enforced:
     module:

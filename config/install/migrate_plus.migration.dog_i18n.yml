@@ -1,4 +1,9 @@
 # Migration of "article" node translations from Drupal 7.
+#
+# Since a detailed description of many configuration parameters
+# has been provided in the 'hybrid_base' and 'hybrid_i18n' migrations,
+# they have not been repeated here. Kindly refer to those migrations
+# if you are looking for detailed descriptions for various paramters.
 
 # Migration metadata
 id: dog_i18n
@@ -11,25 +16,24 @@ migration_tags:
 source:
   plugin: d7_node_content_translation
   node_type: article
-  # Specify the database from which data is to be read.
+  # We deal only with translations in this migration.
+  translations: true
+  # Specify source database.
   key: drupal_7a
-  target: default
   # Static values for the migration.
-  #
-  # We can assign hard-coded values to certain properties using constants.
   constants:
     uid_root: 1
     node_article: 'article'
-  translations: true
   ids:
-    nid:
-      type: integer
+    - nid
 # Migration destination
 destination:
   plugin: 'entity:node'
   default_bundle: article
   translations: true
+# Migration processes
 process:
+  # Attach the translation to the already migrated base node.
   nid:
     - plugin: migration
       migration: dog_base
@@ -42,9 +46,11 @@ process:
   status: status
   promote: promote
   body: body
+# Migration dependencies
 migration_dependencies:
   required:
     - dog_base
+# General dependencies
 dependencies:
   enforced:
     module:
