@@ -62,7 +62,7 @@ class D7NodeEntityTranslation extends Node {
         'status' => 'status',
         'translate' => 'translate',
         'created' => 'created',
-        'timestamp' => 'changed',
+        'changed' => 'changed',
         'vid' => 'revision_id',
         'tnid' => 'entity_id',
       ];
