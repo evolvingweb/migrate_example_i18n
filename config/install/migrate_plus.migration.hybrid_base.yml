@@ -76,6 +76,7 @@ process:
   title: title
   'body/value': body
   'body/format': constants/body_format
+  field_one_liner: field_one_liner
   uid: constants/uid_root
   sticky: sticky
   status: status

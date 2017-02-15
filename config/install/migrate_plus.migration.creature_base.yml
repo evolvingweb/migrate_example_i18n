@@ -48,6 +48,7 @@ process:
     default_value: und
   title: title
   body: body
+  field_one_liner: field_one_liner
   uid: 'constants/uid_root'
   sticky: sticky
   status: status

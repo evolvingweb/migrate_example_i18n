@@ -53,6 +53,7 @@ process:
   # Some other properties which we migrate as is.
   title: title
   body: body
+  field_one_liner: field_one_liner
   sticky: sticky
   status: status
   promote: promote

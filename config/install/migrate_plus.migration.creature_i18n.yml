@@ -38,12 +38,12 @@ destination:
   translations: true
 # Migration processes
 process:
+  type: constants/node_article
   # Attach the translation to the already migrated base node.
   nid:
     plugin: migration
     migration: creature_base
     source: nid
-  type: constants/node_article
   langcode: language
   # Another catch! Since we have used the 'title' module to
   # translate node titles, we need to assign the special field
@@ -51,6 +51,7 @@ process:
   # ensure that we get the translated titles.
   title: title_field
   body: body
+  field_one_liner: field_one_liner
   uid: 'constants/uid_root'
   sticky: sticky
   status: status

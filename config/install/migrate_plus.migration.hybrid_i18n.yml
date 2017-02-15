@@ -53,6 +53,7 @@ destination:
   translations: true
 # Migration processes
 process:
+  type: constants/node_article
   # Attach the translation to the already migrated base node.
   #
   # Since we are migrating only translations, our objective
@@ -65,11 +66,11 @@ process:
     plugin: migration
     source: tnid
     migration: hybrid_base
-  type: constants/node_article
   langcode: language
   title: title
   'body/format': constants/body_format
   'body/value': body
+  field_one_liner: field_one_liner
   uid: constants/uid_root
   sticky: sticky
   status: status
