@@ -9,14 +9,39 @@ use \Drupal\migrate\Row;
 /**
  * Drupal 7 node (article) source from database.
  *
+ * We will use this source plugin for reading Drupal 7
+ * nodes translated with the 'entity_translation' and
+ * 'title' modules.
+ *
  * @MigrateSource(
  *   id = "d7_node_entity_translation"
  * )
  */
 class D7_Node_Entity_Translation extends Node {
 
+  /**
+   * This method is responsible for generating a query
+   * which would eventually be used for discovering items
+   * in the D7 install. The query is used for reading items
+   * during the migration and also for displaying counts
+   * in migration status.
+   *
+   * We override this method so that we can add support
+   * for the "source/translations" parameter. We had to
+   * write a separate source plugin for this case because
+   * node translations using the 'entity_translation' module
+   * works in a very differently than 'content_translation'.
+   * So, we have to design a custom query such that it
+   * returns the same set of fields as 'parent::query()',
+   * but using the 'entity_translation' table as the base
+   * table.
+   */
   public function query() {
 
+    // Since important data like 'which is the node in the
+    // original language', 'in what language is a particular
+    // node?', etc are saved in the 'entity_translation' table,
+    // it was decided to use it as the primary table in the query.
     $query = $this->select('entity_translation', 'et')
       // We will use certain fields from the 'entity_translation'
       // table to override certain fields from the 'node' table.
@@ -28,7 +53,8 @@ class D7_Node_Entity_Translation extends Node {
         'created',
         'changed'
       ))
-      // Ignore all but 'node' translations.
+      // Only query 'node' translations. Ignore translations of
+      // other entity types.
       ->condition('entity_type', 'node')
       // If we only want to consider only published translations,
       // we can set the 'status' to '1'.
@@ -80,6 +106,9 @@ class D7_Node_Entity_Translation extends Node {
    * field values in a specific language, we would not have
    * had to override this method. This issue is marked as a
    * 'todo' for now, so we override this method.
+   *
+   * Basically, in this method, we load and attach field values
+   * for the given base node / translation in it's language.
    */
   public function prepareRow(Row $row) {
     // Get field identifiers.
@@ -94,6 +123,10 @@ class D7_Node_Entity_Translation extends Node {
 
   /**
    * Retrieves field values for a single field of a single entity.
+   *
+   * This method has been overridden just to support the $language
+   * argument. Without that, one cannot specify the language in which
+   * one wants to read the fields.
    *
    * @param string $entity_type
    *   The entity type.

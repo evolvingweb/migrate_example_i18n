@@ -3,11 +3,14 @@
 namespace Drupal\c11n_migrate_i18n\Plugin\migrate\source;
 
 use \Drupal\Core\Database\Query\SelectInterface;
-use Drupal\migrate\Row;
+use \Drupal\migrate\Row;
 use \Drupal\node\Plugin\migrate\source\d7\Node;
 
 /**
  * Drupal 7 node (article) source from database.
+ *
+ * We will use this source plugin for reading Drupal 7
+ * nodes translated with the 'content_translation' module.
  *
  * @MigrateSource(
  *   id = "d7_node_content_translation"
@@ -16,6 +19,12 @@ use \Drupal\node\Plugin\migrate\source\d7\Node;
 class D7_Node_Content_Translation extends Node {
 
   /**
+   * This method is responsible for generating a query
+   * which would eventually be used for discovering items
+   * in the D7 install. The query is used for reading items
+   * during the migration and also for displaying counts
+   * in migration status.
+   *
    * We override this method so that we can add support
    * for the "source/translations" parameter by calling
    * the method self::handleTranslations().
@@ -29,8 +38,8 @@ class D7_Node_Content_Translation extends Node {
   /**
    * Adapt our query for translations.
    *
-   * I this method from from the Drupal 6 node source class
-   * \Drupal\node\Plugin\migrate\source\d7\Node. Once the
+   * I copied this method from from the Drupal 6 node source
+   * \Drupal\node\Plugin\migrate\source\d6\Node. Once the
    * "translations" parameter is supported in Drupal 7, we
    * would safely be able to remove this method.
    *
@@ -48,16 +57,5 @@ class D7_Node_Content_Translation extends Node {
       $query->where('n.tnid <> 0 AND n.tnid <> n.nid');
     }
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function prepareRow(Row $row) {
-      // Allow 'tnid' to uniquely identify translation sets.
-      if (0 == $row->getSourceProperty('tnid')) {
-        $row->setSourceProperty('tnid', $row->getSourceProperty('nid'));
-      }
-      return parent::prepareRow($row);
-   }
 
 }
