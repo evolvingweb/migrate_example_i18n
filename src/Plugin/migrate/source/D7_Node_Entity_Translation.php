@@ -38,58 +38,51 @@ class D7_Node_Entity_Translation extends Node {
    */
   public function query() {
 
-    // Since important data like 'which is the node in the
-    // original language', 'in what language is a particular
-    // node?', etc are saved in the 'entity_translation' table,
-    // it was decided to use it as the primary table in the query.
-    $query = $this->select('entity_translation', 'et')
-      // We will use certain fields from the 'entity_translation'
-      // table to override certain fields from the 'node' table.
-      ->fields('et', array(
-        'language',
-        'uid',
-        'status',
-        'translate',
-        'created',
-        'changed'
-      ))
-      // Only query 'node' translations. Ignore translations of
-      // other entity types.
-      ->condition('entity_type', 'node')
-      // If we only want to consider only published translations,
-      // we can set the 'status' to '1'.
-      // ->condition('status', 1)
-    ;
+    $query = parent::query();
 
-    if (empty($this->configuration['translations'])) {
-      $query->condition('et.source', '');
-    }
-    else {
+    // If translations are enabled, then we need to use the
+    // 'entity_translation' table and read certain data from
+    // there.
+    //
+    // Once the 'translations' parameter is supported in core,
+    // the 'query' method might check for another parameter
+    // like 'translation_type: entity_translation' to determine
+    // whether to execute the modifications we have done below.
+    if (!empty($this->configuration['translations'])) {
+
+      $query->innerJoin('entity_translation', 'et', 'et.entity_id = n.nid AND et.entity_type = :entity_type', [
+        ':entity_type' => 'node',
+      ]);
+
+      // A list of fields which we wish to override with fields
+      // from the 'entity_translation' table.
+      $field_override_coll = [
+        'language' => 'language',
+        'revision_uid' => 'uid',
+        'status' => 'status',
+        'translate' => 'translate',
+        'created' => 'created',
+        'timestamp' => 'changed',
+        'vid' => 'revision_id',
+      ];
+
+      // Remove certain fields which we would override with
+      // equivalent fields in the 'entity_translation' table.
+      $field_query_coll =& $query->getFields();
+      foreach ($field_override_coll as $column_alias => $column_name) {
+        unset($field_query_coll[$column_alias]);
+        $query->addField('et', $column_name, $column_alias);
+      }
+
+      // Ensure that we get the proper 'tnid'.
+      unset ($field_query_coll['tnid']);
+      $query->addField('n', 'nid', 'tnid');
+
+      // Make sure we only read translations.
       $query->condition('et.source', '', '<>');
-    }
 
-    $query->addField('et', 'revision_id', 'vid');
-    $query->addField('et', 'uid', 'revision_uid');
-    $query->addField('et', 'changed', 'timestamp');
+      \Drupal::logger('migrate')->debug($query);
 
-    // Join other node data in its last revision.
-    $query->innerJoin('node', 'n', 'n.nid = et.entity_id');
-
-    // Include node fields which we couldn't get from the
-    // 'entity_translation' table.
-    $query->fields('n', array(
-      'nid',
-      'type',
-      'title',
-      'comment',
-      'promote',
-      'sticky',
-      'translate',
-    ));
-    $query->addField('n', 'uid', 'node_uid');
-
-    if (isset($this->configuration['node_type'])) {
-      $query->condition('n.type', $this->configuration['node_type']);
     }
 
     return $query;
