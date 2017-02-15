@@ -16,7 +16,7 @@ use \Drupal\node\Plugin\migrate\source\d7\Node;
  *   id = "d7_node_content_translation"
  * )
  */
-class D7_Node_Content_Translation extends Node {
+class D7NodeContentTranslation extends Node {
 
   /**
    * This method is responsible for generating a query
