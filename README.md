@@ -38,6 +38,7 @@ Since this is an advanced migration topic, it is assumed that you already have t
 * How to create a custom module in Drupal 8
 * How to write a basic migration in Drupal 8
 * How to install and use [drush](http://www.drush.org/) commands
+* How to configure a multi-linguage website on Drupal 8
 
 # The module
 
