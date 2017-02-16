@@ -49,4 +49,14 @@ There is nothing special about the module definition as such, however, here are 
   * [migrate_plus](https://www.drupal.org/project/migrate_plus)
   * [migrate_tools](https://www.drupal.org/project/migrate_tools)
   * [migrate_source_csv](https://www.drupal.org/project/migrate_source_csv)
+  * migrate_drupal: We need this module to use Drupal 6 and Drupal 7 sites as data sources for our migration.
 * The [c11n_migrate_i18n.install](c11n_migrate_i18n.install) is not required under normal circumstances, however, I have implemented `hook_install()` and `hook_uninstall()` in that file. See the [import/README.md](import/README.md) file for more information.
+
+# Drupal 8 configuration
+
+Before migrating translated content into Drupal 8, one must make sure that their Druapl 8 site actually supports translated content. To do this, we need to:
+
+* Enable the `language` module and set up languages and method of language determination. Example: Set up English and French.
+* Enable the `content_translation` module.
+* Configure the content types which you want to be translatable. Example, edit the _Article_ content type and enable translations.
+* Make sure you have your content types and fields configured as per the data you wish to import. Example, if your source articles have a field named _One-liner_, make sure the Drupal 8 nodes have a corresponding field to save the data in.
