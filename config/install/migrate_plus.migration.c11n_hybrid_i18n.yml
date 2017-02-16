@@ -11,7 +11,7 @@
 # not being described in this migration to avoid repetition.
 
 # Migration metadata
-id: hybrid_i18n
+id: c11n_hybrid_i18n
 label: Story translations from Drupal 6
 migration_tags:
   - node
@@ -65,7 +65,7 @@ process:
   nid:
     plugin: migration
     source: tnid
-    migration: hybrid_base
+    migration: c11n_hybrid_base
   langcode: language
   title: title
   'body/format': constants/body_format
@@ -86,7 +86,7 @@ process:
 # nodes will always exist when the translations are being migrated.
 migration_dependencies:
   required:
-    - hybrid_base
+    - c11n_hybrid_base
 # General dependencies
 dependencies:
   enforced:

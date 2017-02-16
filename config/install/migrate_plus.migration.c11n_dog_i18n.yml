@@ -1,57 +1,48 @@
 # Migration of "article" node translations from Drupal 7.
 #
-# This file demonstrates migration of content translated with
-# the 'entity_translation' module.
-#
 # Since a detailed description of many configuration parameters
 # has been provided in the 'hybrid_base' and 'hybrid_i18n' migrations,
 # they have not been repeated here. Kindly refer to those migrations
 # if you are looking for detailed descriptions for various paramters.
 
 # Migration metadata
-id: creature_i18n
-label: Creature translations from Drupal 7
+id: c11n_dog_i18n
+label: Dog translations from Drupal 7
 migration_tags:
   - node
   - article
   - d7
 # Migration source
 source:
-  plugin: d7_node_entity_translation
+  plugin: d7_node_content_translation
   node_type: article
   # We deal only with translations in this migration.
   translations: true
-  # Specify the database from which data is to be read.
-  key: drupal_7b
-  target: default
+  # Specify source database.
+  key: drupal_7a
   # Static values for the migration.
   constants:
     uid_root: 1
     node_article: 'article'
   ids:
     - nid
-    - language
 # Migration destination
 destination:
   plugin: 'entity:node'
-  # Important! Create translations for existing nodes.
+  default_bundle: article
   translations: true
 # Migration processes
 process:
-  type: constants/node_article
   # Attach the translation to the already migrated base node.
   nid:
     plugin: migration
-    migration: creature_base
-    source: nid
-  langcode: language
-  # Another catch! Since we have used the 'title' module to
-  # translate node titles, we need to assign the special field
-  # 'title_field' to the 'title' of our destination nodes to
-  # ensure that we get the translated titles.
-  title: title_field
+    migration: c11n_dog_base
+    source: tnid
+  type: constants/node_article
+  title: title
   body: body
   field_one_liner: field_one_liner
+  langcode: language
   uid: 'constants/uid_root'
   sticky: sticky
   status: status
@@ -59,7 +50,7 @@ process:
 # Migration dependencies
 migration_dependencies:
   required:
-    - creature_base
+    - c11n_dog_base
 # General dependencies
 dependencies:
   enforced:

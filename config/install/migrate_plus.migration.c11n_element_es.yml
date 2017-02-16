@@ -9,7 +9,7 @@
 # this migration, it is highly recommended that you go through it first.
 
 # Migration metadata
-id: element_es
+id: c11n_element_es
 label: Element data in Spanish
 migration_tags:
   - node
@@ -55,13 +55,9 @@ destination:
 process:
   # Attach the translation to the already migrated base node.
   nid:
-    -
-      plugin: migration
-      source: Simbolo
-      migration: element_en
-    -
-      plugin: skip_on_empty
-      method: row
+    plugin: migration
+    source: Simbolo
+    migration: c11n_element_en
   # For the rest of the fields, we migrate them as is.
   type: constants/node_element
   title: Nombre
@@ -73,7 +69,7 @@ process:
 # Migration dependencies
 migration_dependencies:
   required:
-    - element_en
+    - c11n_element_en
 # General dependencies
 dependencies:
   enforced:

@@ -8,7 +8,7 @@
 # where to start, this would be a good place to get started.
 
 # Migration metadata
-id: hybrid_base
+id: c11n_hybrid_base
 label: Story data from Drupal 6
 migration_tags:
   - node
