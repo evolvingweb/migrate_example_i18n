@@ -29,7 +29,7 @@ source:
     uid_root: 1
     node_article: 'article'
   ids:
-    - nid:
+    - nid
     - language
 # Migration destination
 destination:
