@@ -24,13 +24,12 @@ source:
   translations: true
   # Specify the database from which data is to be read.
   key: drupal_7b
-  target: default
   # Static values for the migration.
   constants:
     uid_root: 1
     node_article: 'article'
   ids:
-    - nid
+    - nid:
     - language
 # Migration destination
 destination:
