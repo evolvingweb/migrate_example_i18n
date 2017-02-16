@@ -60,3 +60,60 @@ Before migrating translated content into Drupal 8, one must make sure that their
 * Enable the `content_translation` module.
 * Configure the content types which you want to be translatable. Example, edit the _Article_ content type and enable translations.
 * Make sure you have your content types and fields configured as per the data you wish to import. Example, if your source articles have a field named _One-liner_, make sure the Drupal 8 nodes have a corresponding field to save the data in.
+
+# Migrate hybrids: Drupal 6 content translations to Drupal 8
+
+Since Drupal 6 is older, it looks like a better place to start. To get started, we create a migration group named [c11n_hybrid](config/install/migrate_plus.migration_group.c11n_hybrid.yml) (optional). This would let us execute all grouped migrations with one command like
+
+    drush migrate-import --group=c11n_hybrid --update
+
+Migrating translated content into Drupal 8 usually involves two steps:
+
+* Base migration: Migrate data in base language and ignore translations.
+* Translation migration: Migrate only the translations (and ignore data in base language). These translations are usually linked to the content we create in the first step, thereby leaving us with only one entity with multiple translations.
+
+Before jumping into writing these migrations, it is important to mention that Drupal 6 and Drupal 8 translations work very differently. Here's the difference in a nut-shell:
+
+* Drupal 6: First, you create a piece of content in it's base language. Then, you add a translation of it. However, when you create a translation, another fresh node is created with a different ID and a property named `tnid` is used to save the ID of the original node, thereby recording the fact that the node is a translation of another node. For language-neutral content the `tnid` is set to 0.
+* Drupal 8: First, you create a piece of content in it's base language. Then, you add a translation of it. When you create the translation, no new node is created. The translation is saved against the original node itself but measures are taken to save the translations in the other language.
+
+Hence we follow the two step process for migrating translated content from Drupal 6.
+
+## Hybrid base migration
+
+Having created the migration group, we would create our first migration with the ID [c11n_hybrid_base](config/install/migrate_plus.migration.c11n_hybrid_base.yml). We do this by defining some usual parameters:
+
+* **id:** An unique ID for the migration.
+* **migration_group:** The group to which the migration belongs.
+* **migration_tags:** A set of tags for the migration.
+* **source:**
+  * **plugin:** Since we want to import data from a Drupal installation, we need to set the source plugin to `d6_node`. The `d6_node` source plugin is introduced by the `migrate_drupal` module and it helpss read nodes from a Drupal 6 installation without having to manually write queries to read the nodes and attaching the relevant fields, etc.
+  * **node_type:** With this parameter we tell the source plugin that we are interested in a particular node type only, in this case, _story_.
+  * **key:** Since we intend to read the Drupal 6 data from a secondary database connection (the primary one being the Drupal 8 database), we need to define the secondary connection in the `$databases` global variable in our `settings.local.php` file. Once done, we need to mention the `key` of the `$databases` array where the Drupal 6 connection is defined.
+  * **target:** Optionally, you can also define a _target_. This parameter defaults to `default` and should be defined if your connection is not defined in the `default` sub-key of `$databases`.
+  * **constants:** We define some static / hard-coded values under this parameter.
+  * **translations:** We DO NOT define the translations parameter while migrating base data. Omiting the parameter or setting it to `false` tells the source plugin that we are only interested in migrating non-translations, i.e. content in base language and language-neutral content. It is important NOT to specify this parameter otherwise you will end up with separate nodes for every language variation of each node.
+* **destination:**
+  * **plugin:** Since we want to create node entities, we specify this as `entity:node`. That's it.
+  * **translations:** We DO NOT define the translations parameter while migrating base data. Omiting the parameter or setting it to `false` tells the destination plugin that we are interested in creating fresh nodes for each record as opposed to associating them as translations for existing nodes.
+* **process:** This is where we tell migrate how to map the old node properties to the new node properties. Most of the properties have been assigned as is, without alteration, however, some note-worthy properties have been discussed below:
+  * **type:** We use a constant value to define the type of nodes we wish to create from the imported data.
+  * **langcode:** The `langcode` parameter was formerly `language` in Drupal 6. So we need to assign it properly so that Drupal 8 knows as to in which language the node is to be created. We use the `default_value` plugin here to provide a fallback to the `und` or `undefined` language just in case some node is out of place, however, it is highly unlikely that it happens.
+  * **body:** We can assign this property directly to the `body` property. However, the Drupal 6 data is treated as plain text in Drupal 8 in that case. So migrating with `body: body`, the imported nodes in Drupal 8 would show visible HTML markup on your site. To resolve this, we explicitly assign the old `body` to `body/value` and specify that the text is in HTML by writing `body/format: constants/body_format`. That tells Drupal to treat the body as _Full HTML_.
+
+This takes care of the base data. If you run this migration with `drush migrate-import c11n_hybrid_i18n --update`, all Drupal 6 nodes which are in base language or are language-neutral will be migrated into Drupal 8.
+
+## Hybrid translation migration
+
+We are half-way through now and all that's missing is migrating translations of the nodes we migrated above. To do this, we create another migration with the ID [c11n_hybrid_i18n](config/install/migrate_plus.migration.c11n_hybrid_i18n.yml). The migration definition remains mostly the same but has the following important differences from the base migration:
+
+* **source:**
+  * **translations:** We define this parameter to make the source plugin read only translation nodes and to make it ignore the nodes we already migrated in the base migration.
+* **destination:**
+  * **translations:** We define this parameter to make the destination plugin create translations for existing nodes instead of creating fresh nodes for each source record.
+* **process:**
+  * **nid:** Are we defining an ID for the nodes to be generated? Yes, we are. With the `nid` parameter, we use the `migration` plugin and tell Drupal to create translations for the nodes we created during the base migration, like `plugin: migration` and `migration: c11n_hybrid_base`. So, for every record, Drupal derives the ID of the relevant node created during the base migration and creates a translation for it.
+  * **langcode:** This is important because here we define the language in which the translation should be created.
+* **migration_dependencies:** Since we cannot associate the translations to the base nodes if the base nodes do not exist, we tell Drupal that this migration depends on the base migration `c11n_hybrid_base`. That way, one will be forced to run the base migration before running this migration.
+
+That's it! We can run our translation migration with `drush migrate-import c11n_hybrid_i18n --update` and the translations will be imported into Drupal 8. You can check if everything went alright by clicking the `Translate` option for any translated node in Drupal 8. If everything went correctly, you should see that the node exists in the original language and has one or more translations.
