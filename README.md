@@ -142,7 +142,7 @@ We define a [c11n_dog_base](config/install/migrate_plus.migration.c11n_dog_base.
 * We do not declare `translations` parameter for the `source` plugin, so that only non-translations are read from Drupal 7.
 * We do not declare `translations` parameter for the `destination` plugin. Thus, separate Drupal 8 nodes will be generated for every Drupal 7 node.
 
-# Dog translation migration
+## Dog translation migration
 
 We define a [c11n_dog_i18n](config/install/migrate_plus.migration.c11n_dog_i18n.yml) migration to migrate all translations.
 
