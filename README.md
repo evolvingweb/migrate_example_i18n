@@ -134,14 +134,21 @@ But, the code must go on! Until the `translations` parameter or an equivalent is
 
 Apart from that, we have everything going just the way we did for Drupal 6.
 
-* We define a [c11n_dog_base](config/install/migrate_plus.migration.c11n_dog_base.yml) migration.
-  * We use our `d7_node_content_translation` plugin as the `source` plugin.
-  * We do not declare `translations` parameter for the `source` plugin, so that only non-translations are read from Drupal 7.
-  * We do not declare `translations` parameter for the `destination` plugin. Thus, separate Drupal 8 nodes will be generated for every Drupal 7 node.
-* We define a [c11n_dog_i18n](config/install/migrate_plus.migration.c11n_dog_i18n.yml) migration.
-  * We use our `d7_node_content_translation` plugin as the `source` plugin.
-  * We define `translations: true` for the source plugin so that only translated nodes are read from Drupal 7
-  * We define `translations: true` for the destination plugin so that instead of the data is migrated as translations for nodes created during the base migration.
-  * We make sure that the `i18n` migration depends on the `base` migration.
+## Dog base migration
+
+We define a [c11n_dog_base](config/install/migrate_plus.migration.c11n_dog_base.yml) migration to migrate all non-translations first. This includes base translations and language-neutral content.
+
+* We use our `d7_node_content_translation` plugin as the `source` plugin.
+* We do not declare `translations` parameter for the `source` plugin, so that only non-translations are read from Drupal 7.
+* We do not declare `translations` parameter for the `destination` plugin. Thus, separate Drupal 8 nodes will be generated for every Drupal 7 node.
+
+# Dog translation migration
+
+We define a [c11n_dog_i18n](config/install/migrate_plus.migration.c11n_dog_i18n.yml) migration to migrate all translations.
+
+* We use our `d7_node_content_translation` plugin as the `source` plugin.
+* We define `translations: true` for the source plugin so that only translated nodes are read from Drupal 7
+* We define `translations: true` for the destination plugin so that instead of the data is migrated as translations for nodes created during the base migration.
+* We make sure that the `i18n` migration depends on the `base` migration.
 
 That's it! We can run the base and i18n migrations one by one and all Drupal 7 nodes would be imported to Drupal 8 along with their translations. To execute both the migrations at once, we can run the command `drush migrate-import c11n_dog_i18n --update --execute-dependencies`. The `--execute-dependencies` parameter will ensure that the `base` migration runs before the `i18n` migration. Perfect!
