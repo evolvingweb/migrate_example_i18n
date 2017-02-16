@@ -1,0 +1,9 @@
+# Migration group 'creature' migrations
+id: c11n_creature
+label: Creature migration
+description: Migration of mythological creature data from Drupal 7 (entity translations).
+source_type: Drupal 7 database
+dependencies:
+  enforced:
+    module:
+      - c11n_migrate_i18n
