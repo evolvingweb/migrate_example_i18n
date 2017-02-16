@@ -152,3 +152,59 @@ We define a [c11n_dog_i18n](config/install/migrate_plus.migration.c11n_dog_i18n.
 * We make sure that the `i18n` migration depends on the `base` migration.
 
 That's it! We can run the base and i18n migrations one by one and all Drupal 7 nodes would be imported to Drupal 8 along with their translations. To execute both the migrations at once, we can run the command `drush migrate-import c11n_dog_i18n --update --execute-dependencies`. The `--execute-dependencies` parameter will ensure that the `base` migration runs before the `i18n` migration. Perfect!
+
+# Migrate creatures: Drupal 7 entity translations to Drupal 8
+
+Coming soon
+
+# Migrate elements: Non-drupal translated content to Drupal 8
+
+As we do with any other translated content migration, we will follow the same old two steps here:
+
+* Migrate the content in base language. In our case, this is English (en).
+* Migrate the content in Spanish (es) such that they are saved as translations for the English content.
+
+## Element base migration (English)
+
+To achieve this, we define the [c11n_element_en](config/install/migrate_plus.migration.c11n_element_en.yml) migration to migrate element data in base language, which in our case is English (en). Here is a quick look at some important parameters used in the migration definition:
+
+* **source:**
+  * **plugin:** Since we want to import data from a CSV file, we need to use the _csv_ plugin provided by the [migrate_source_csv](https://www.drupal.org/project/migrate_source_csv) module.
+  * **path:** Path to the CSV data source so that the source plugin can read the file.
+  * **header_row_count:** Number of initial rows in the CSV file which do not contain actual data. This helps ignore column headings.
+  * **keys:** The column or columns in the CSV file which help uniquely identify each record. In our example, the chemical symbol in the column _Symbol_ is unique to each row, hence, we use that as the key.
+  * **fields:** A description for every column present in the CSV file. This is used for displaying source details in the UI.
+  * **constants:** Some static values for use during the migration.
+* **destination:**
+  * **plugin:** Nothing fancy here. We aim to create _node_ entities, so we set the `plugin` as `entity:node`.
+  * **translations:** Since we are importing the content in base language, we do not specify the `translations` parameter. This will make Drupal create individual nodes for every record.
+* **process:** Most of the properties are migrated as is. However, here are some of them which need some properties which need a special explication:
+  * **type:** We hard-code the type of nodes we wish to create, i.e., `type: constants/node_element`.
+  * **langcode:** Since all source records are in English, we inform Drupal to save the destination nodes in English as well. We do this by explicitly specifying `langcode` as `en`.
+  * **field_element_discoverer:** This field is a bit tricky. Looking at the source, we realize that every element has one or more discoverers. Multiple discoverer names are separated by commas. Thus, we use `plugin: explode` and `delimiter: ', '` to split multiple records into arrays. With the values split into arrays, Drupal understands and saves the column data as multiple values.
+
+After we run this migration like `drush migrate-import c11n_element_en`, we get a list of all elements in the base language (English).
+
+## Element translation migration (Spanish)
+
+With the base nodes in place, we define a similar migration to the previous one with the ID [c11n_element_es](config/install/migrate_plus.migration.c11n_element_es.yml). Let us look at some major differences between the `c11n_element_es` migration and the `c11n_element_en` migration:
+
+* **source:**
+  * **path:** Since the Spanish node data is in another file, we change the path accordingly.
+  * **keys:** The Spanish word for _Symbol_ is _Símbolo_ and it is the column containing the unique ID of each record. Hence, we define it as the source data key. A noteworthy observation here would be the special `í` in the word `Símbolo`. Since it is a special character, setting it as a `key` did not work. So, as a workaround, I had to remove all such accented characters from the column headings and write the `key` parameter as `Simbolo` without the special `í` with a normal `i`.
+  * **fields:** The field definitions had to be changed to match the Spanish column names used in the CSV.
+* **destination:**
+  * **translations:** Since we want Drupal to create translations for English language nodes created during the `c11n_element_en` migration, we specify `translations: true`.
+* **process:**
+  * **nid:** As mentioned above, we use the `plugin: migration` to make Drupal lookup nodes which were created during the English element migration and use their ID as the `nid`. This results in the Spanish translations being attached to the original nodes created in English.
+  * **langcode:** Since all records in [element.data.es.csv](import/element/element.data.es.csv) are in Spanish, we hard-code the `langcode` to `es` for each record of this migration. This tell Drupal that these are _Spanish_ translations.
+* **migration_dependencies:** This ensures that the base data is migrated before the translations. So to run this migration, one must run the `c11n_element_en` migration first.
+
+Voilà! Run the Spanish migration like `drush migrate-import c11n_element_es` and you have the Spanish translations for the elements! If we had another file containing French translations, we would create another migration like we did for Spanish and import the French data in a similar way. I could not find a CSV with element data in French, so I could not include it in this example :(
+
+# Things to remember
+
+* We migrate the base data first! No need for setting any `translations` parameters here.
+* We migrate the translations after the base data. We need to set `translations: true` for the `destination` plugin. We might have to set `translations: true` for the source plugin depending on the source we are using.
+* We must ensure that the correct `langcode` is being set for the destination nodes.
+* We must ensure that the translation migration depends on the base migration. We do this using the `migration_dependencies` parameter.
