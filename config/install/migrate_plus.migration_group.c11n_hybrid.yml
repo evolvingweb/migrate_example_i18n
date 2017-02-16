@@ -1,0 +1,9 @@
+# Migration group 'hybrid' migrations
+id: c11n_hybrid
+label: Hybrid migration
+description: Migration of animal hybrid data from Drupal 6 (content translations).
+source_type: Drupal 6 database
+dependencies:
+  enforced:
+    module:
+      - c11n_migrate_i18n

@@ -10,7 +10,8 @@
 
 # Migration metadata
 id: c11n_dog_base
-label: Dog base data from Drupal 7
+label: Dog base data
+migration_group: c11n_dog
 migration_tags:
   - node
   - article

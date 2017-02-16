@@ -8,6 +8,7 @@
 # Migration metadata
 id: c11n_element_en
 label: Element data in English
+migration_group: c11n_element
 migration_tags:
   - node
   - element

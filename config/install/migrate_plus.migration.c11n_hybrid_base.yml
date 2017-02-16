@@ -9,7 +9,8 @@
 
 # Migration metadata
 id: c11n_hybrid_base
-label: Story data from Drupal 6
+label: Hybrid base data
+migration_group: c11n_hybrid
 migration_tags:
   - node
   - story

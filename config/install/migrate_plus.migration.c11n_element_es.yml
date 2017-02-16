@@ -11,6 +11,7 @@
 # Migration metadata
 id: c11n_element_es
 label: Element data in Spanish
+migration_group: c11n_element
 migration_tags:
   - node
   - element

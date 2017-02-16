@@ -10,7 +10,8 @@
 
 # Migration metadata
 id: c11n_creature_i18n
-label: Creature translations from Drupal 7
+label: Creature translations
+migration_group: c11n_creature
 migration_tags:
   - node
   - article

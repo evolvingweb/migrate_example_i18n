@@ -7,7 +7,8 @@
 
 # Migration metadata
 id: c11n_dog_i18n
-label: Dog translations from Drupal 7
+label: Dog translations
+migration_group: c11n_dog
 migration_tags:
   - node
   - article

@@ -12,7 +12,8 @@
 
 # Migration metadata
 id: c11n_hybrid_i18n
-label: Story translations from Drupal 6
+label: Hybrid translations
+migration_group: c11n_hybrid
 migration_tags:
   - node
   - story
