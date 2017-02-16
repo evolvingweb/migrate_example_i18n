@@ -118,3 +118,30 @@ We are half-way through now and all that's missing is migrating translations of 
 * **migration_dependencies:** Since we cannot associate the translations to the base nodes if the base nodes do not exist, we tell Drupal that this migration depends on the base migration `c11n_hybrid_base`. That way, one will be forced to run the base migration before running this migration.
 
 That's it! We can run our translation migration with `drush migrate-import c11n_hybrid_i18n --update` and the translations will be imported into Drupal 8. You can check if everything went alright by clicking the `Translate` option for any translated node in Drupal 8. If everything went correctly, you should see that the node exists in the original language and has one or more translations.
+
+# Migrate dogs: Drupal 7 content translations to Drupal 8
+
+Great! So another set of content translations! The good news is that content translations work the same was in Drupal 7 as they do in Drupal 6. However, at the time of writing text, we do not have good support for migrating translated content from Drupal 7 into Drupal 8. More precisely, a parameter named `translations` is not supported by the `d7_node` migration source plugin. Without the parameter, we do not have any easy method for importing only non-translated content or vice-versa. All migrations end up importing both non-translations and translations. Apart from that, everything works just like the Drupal 6 migration discussed above.
+
+But, the code must go on! Until the `translations` parameter or an equivalent is supported out of the box, we can create a custom source plugin like [D7NodeContentTranslation](src/Plugin/migrate/src/D7NodeContentTranslation.php). Here's a quick introduction to the class:
+
+* The class is derived from `\Drupal\node\Plugin\migrate\source\d7\Node` which would eventually support the `translations` parameter and make our lives easier.
+* The annotation `@MigrateSource` makes it available as a migration source plugin. The plugin ID being `d7_node_content_translation`.
+* The `query` method has been overridden to intercept the query used by the migration module to read source records. We call a `handleTranslations` method on the query which does what it's name says, handles translations.
+* The `handleTranslations` method is an exact copy of the one which exists in the Drupal 6 node source plugin. It adds support for the `tranlsations` parameter:
+  * If `translations: true`, then it modifies the query so that it would only return translated nodes.
+  * If `translations: false`, then it modifies the query so that it would only return non-translations, i.e. nodes in base language and language-neutral nodes.
+
+Apart from that, we have everything going just the way we did for Drupal 6.
+
+* We define a [c11n_dog_base](config/install/migrate_plus.migration.c11n_dog_base.yml) migration.
+  * We use our `d7_node_content_translation` plugin as the `source` plugin.
+  * We do not declare `translations` parameter for the `source` plugin, so that only non-translations are read from Drupal 7.
+  * We do not declare `translations` parameter for the `destination` plugin. Thus, separate Drupal 8 nodes will be generated for every Drupal 7 node.
+* We define a [c11n_dog_i18n](config/install/migrate_plus.migration.c11n_dog_i18n.yml) migration.
+  * We use our `d7_node_content_translation` plugin as the `source` plugin.
+  * We define `translations: true` for the source plugin so that only translated nodes are read from Drupal 7
+  * We define `translations: true` for the destination plugin so that instead of the data is migrated as translations for nodes created during the base migration.
+  * We make sure that the `i18n` migration depends on the `base` migration.
+
+That's it! We can run the base and i18n migrations one by one and all Drupal 7 nodes would be imported to Drupal 8 along with their translations. To execute both the migrations at once, we can run the command `drush migrate-import c11n_dog_i18n --update --execute-dependencies`. The `--execute-dependencies` parameter will ensure that the `base` migration runs before the `i18n` migration. Perfect!
