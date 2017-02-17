@@ -28,9 +28,6 @@ source:
   constants:
     uid_root: 1
     node_article: 'article'
-  ids:
-    - nid:
-    - language
 # Migration destination
 destination:
   plugin: 'entity:node'
