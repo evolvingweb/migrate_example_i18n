@@ -29,12 +29,10 @@ class D7NodeEntityTranslation extends Node {
    * We override this method so that we can add support
    * for the "source/translations" parameter. We had to
    * write a separate source plugin for this case because
-   * node translations using the 'entity_translation' module
-   * works in a very differently than 'content_translation'.
-   * So, we have to design a custom query such that it
-   * returns the same set of fields as 'parent::query()',
-   * but using the 'entity_translation' table as the base
-   * table.
+   * translations using the 'entity_translation' module
+   * work very differently than 'content_translation'.
+   * So, we have to modify the query and utilize various
+   * fields from the 'entity_translation' table.
    */
   public function query() {
 
@@ -50,7 +48,7 @@ class D7NodeEntityTranslation extends Node {
     // whether to execute the modifications we have done below.
     if (!empty($this->configuration['translations'])) {
 
-      $query->innerJoin('entity_translation', 'et', 'et.entity_id = n.nid AND et.entity_type = :entity_type', [
+      $query->innerJoin('entity_translation', 'et', 'et.entity_type = :entity_type AND et.entity_id = n.nid', [
         ':entity_type' => 'node',
       ]);
 
