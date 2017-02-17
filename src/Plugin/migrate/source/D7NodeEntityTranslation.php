@@ -155,4 +155,32 @@ class D7NodeEntityTranslation extends Node {
     return $values;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getIds() {
+    $output = parent::getIds();
+    // Since content translated with 'entity_translate' have the same
+    // node ID, no matter what language, translated node records
+    // cannot uniquely be identified with just the 'node.nid' column.
+    // Hence, we need to include the translation 'language' to identify
+    // translated records uniquely.
+    //
+    // For example, for nid=6, if there are 3 translations, each one of
+    // them can uniquely be identified with a composite key like, '6:en',
+    // '6:es', '6:fr'.
+    //
+    // Without this, the migration plugin will process the first translation
+    // it encounters and for any other translation, it will see that the
+    // node with ID 6 has already been processed and it will ignore it.
+    if (!empty($this->configuration['translations'])) {
+      $output['language'] = [
+        'alias' => 'et',
+        'type' => 'string',
+        'length' => 4,
+      ];
+    }
+    return $output;
+  }
+
 }
