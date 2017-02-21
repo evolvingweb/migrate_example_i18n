@@ -1,16 +1,18 @@
-# Migration file for "story" node data from Drupal 6.
+# Migrate of nodes of type "story" from Drupal 6 to Drupal 8.
 #
 # This file demonstrates migration of content translated with
-# the 'content_translation' module.
+# the D6 'content_translation' module.
 #
-# A detailed description of many configuration parameters
-# has been provided in this migration. Thus, if you do not know
-# where to start, this would be a good place to get started.
+# Many configuration parameters are described in detail in this
+# file, so it's a good starting point.
 
 # Migration metadata
 id: c11n_hybrid_base
 label: Hybrid base data
+# Migrations can be organized into groups, one group per migration.
 migration_group: c11n_hybrid
+# Migrations can also be organized by tags, potentially many tags per
+# migration.
 migration_tags:
   - node
   - story
@@ -18,14 +20,12 @@ migration_tags:
 # Migration source
 source:
   # Since we want to migrate nodes from Drupal 6, we need to
-  # use the 'd6_node' source plugin. The plugin is introduced
-  # by the 'migrate_drupal' module and provides all basic
-  # functionality one needs to migrate Drupal 6 nodes.
+  # use the 'd6_node' source plugin. The plugin icomes with core's
+  # 'migrate_drupal' module.
   #
-  # If you need additional functionality, you can create your
-  # plugin derived from this one. Something similar has been
-  # demonstrated for Drupal 7 nodes in case you are interested
-  # in learning how to write a custom source plugin.
+  # If you need additional functionality, you can create a custom
+  # plugin that extends this one. See the c11n_dog_base migration
+  # for an example of that.
   plugin: d6_node
   # The type of nodes we want to migrate.
   #
@@ -38,14 +38,10 @@ source:
   # $databases variable. See the sample 'settings.local.php'
   # file provided in the project to learn how to add these
   # settings. For this example, the settings are in
-  # $databases['drupal_7a']['default']. The database 'target'
-  # defaults to 'default' depending on your settings. I
-  # included it here for showing it's existence and usage.
+  # $databases['drupal_6'].
   key: drupal_6
-  target: default
-  # Static values for the migration.
+  # Constant values for the migration.
   constants:
-    uid_root: 1
     node_article: article
     body_format: full_html
 # Migration destination
@@ -54,39 +50,26 @@ destination:
   # we specify 'entity:node' as the destination plugin.
   plugin: 'entity:node'
 # Migration processes
+# This does the mapping between source fields and destination fields.
 process:
-  # Specify the type of node we wish to create.
-  #
-  # We are interested in creating 'article' nodes in this example.
+  # The type of node we wish to create, in this case 'article'.
   type: constants/node_article
   # Destination node language.
-  #
-  # If some node is missing a language, we fallback to 'und',
-  # however, I do not think we will ever stumble upon such a case.
-  langcode:
-    plugin: default_value
-    source: language
-    default_value: und
-  # Some other properties which we migrate as is.
-  #
-  # Here, the 'body' property is a special case because if we do
-  # 'body: body', the old body is copied into Drupal 8, however it
-  # is not treated as 'Full HTML'. To remedy that, 'body' data from
-  # the Drupal 6 site has been assigned to 'body/value' and the
-  # 'body/format' property is explicitly specified as 'full_html'.
-  title: title
+  langcode: language
+  # The body is a special case, since it has both a value and a format.
+  # We assign body data as the value, and 'full_html' as the format.
   'body/value': body
   'body/format': constants/body_format
+  # Some other properties which we migrate as-is.
+  title: title
   field_one_liner: field_one_liner
-  uid: constants/uid_root
   sticky: sticky
   status: status
   promote: promote
 # General dependencies
 #
-# We tell Drupal that this particular piece of configuration depends
-# on our custom module. In case the module gets uninstalled, the
-# configuration will also be uninstalled.
+# This migration depends on our custom module. If the module is
+# uninstalled, the configuration should also be uninstalled.
 dependencies:
   enforced:
     module:
