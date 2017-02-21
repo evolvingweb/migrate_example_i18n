@@ -29,67 +29,53 @@ class D7NodeEntityTranslation extends Node {
    * We override this method so that we can add support
    * for the "source/translations" parameter. We had to
    * write a separate source plugin for this case because
-   * node translations using the 'entity_translation' module
-   * works in a very differently than 'content_translation'.
-   * So, we have to design a custom query such that it
-   * returns the same set of fields as 'parent::query()',
-   * but using the 'entity_translation' table as the base
-   * table.
+   * translations using the 'entity_translation' module
+   * work very differently than 'content_translation'.
+   * So, we have to modify the query and utilize various
+   * fields from the 'entity_translation' table.
    */
   public function query() {
 
-    // Since important data like 'which is the node in the
-    // original language', 'in what language is a particular
-    // node?', etc are saved in the 'entity_translation' table,
-    // it was decided to use it as the primary table in the query.
-    $query = $this->select('entity_translation', 'et')
-      // We will use certain fields from the 'entity_translation'
-      // table to override certain fields from the 'node' table.
-      ->fields('et', array(
-        'language',
-        'uid',
-        'status',
-        'translate',
-        'created',
-        'changed'
-      ))
-      // Only query 'node' translations. Ignore translations of
-      // other entity types.
-      ->condition('entity_type', 'node')
-      // If we only want to consider only published translations,
-      // we can set the 'status' to '1'.
-      // ->condition('status', 1)
-    ;
+    $query = parent::query();
 
-    if (empty($this->configuration['translations'])) {
-      $query->condition('et.source', '');
-    }
-    else {
+    // If translations are enabled, then we need to use the
+    // 'entity_translation' table and read certain data from
+    // there.
+    //
+    // Once the 'translations' parameter is supported in core,
+    // the 'query' method might check for another parameter
+    // like 'translation_type: entity_translation' to determine
+    // whether to execute the modifications we have done below.
+    if (!empty($this->configuration['translations'])) {
+
+      $query->innerJoin('entity_translation', 'et', 'et.entity_type = :entity_type AND et.entity_id = n.nid', [
+        ':entity_type' => 'node',
+      ]);
+
+      // A list of fields which we wish to override with fields
+      // from the 'entity_translation' table.
+      $field_override_coll = [
+        'language' => 'language',
+        'revision_uid' => 'uid',
+        'status' => 'status',
+        'translate' => 'translate',
+        'created' => 'created',
+        'changed' => 'changed',
+        'vid' => 'revision_id',
+        'tnid' => 'entity_id',
+      ];
+
+      // Remove certain fields which we would override with
+      // equivalent fields in the 'entity_translation' table.
+      $field_query_coll =& $query->getFields();
+      foreach ($field_override_coll as $column_alias => $column_name) {
+        unset($field_query_coll[$column_alias]);
+        $query->addField('et', $column_name, $column_alias);
+      }
+
+      // Make sure we only read translations.
       $query->condition('et.source', '', '<>');
-    }
 
-    $query->addField('et', 'revision_id', 'vid');
-    $query->addField('et', 'uid', 'revision_uid');
-    $query->addField('et', 'changed', 'timestamp');
-
-    // Join other node data in its last revision.
-    $query->innerJoin('node', 'n', 'n.nid = et.entity_id');
-
-    // Include node fields which we couldn't get from the
-    // 'entity_translation' table.
-    $query->fields('n', array(
-      'nid',
-      'type',
-      'title',
-      'comment',
-      'promote',
-      'sticky',
-      'translate',
-    ));
-    $query->addField('n', 'uid', 'node_uid');
-
-    if (isset($this->configuration['node_type'])) {
-      $query->condition('n.type', $this->configuration['node_type']);
     }
 
     return $query;
@@ -167,6 +153,34 @@ class D7NodeEntityTranslation extends Node {
       }
     }
     return $values;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getIds() {
+    $output = parent::getIds();
+    // Since content translated with 'entity_translate' have the same
+    // node ID, no matter what language, translated node records
+    // cannot uniquely be identified with just the 'node.nid' column.
+    // Hence, we need to include the translation 'language' to identify
+    // translated records uniquely.
+    //
+    // For example, for nid=6, if there are 3 translations, each one of
+    // them can uniquely be identified with a composite key like, '6:en',
+    // '6:es', '6:fr'.
+    //
+    // Without this, the migration plugin will process the first translation
+    // it encounters and for any other translation, it will see that the
+    // node with ID 6 has already been processed and it will ignore it.
+    if (!empty($this->configuration['translations'])) {
+      $output['language'] = [
+        'alias' => 'et',
+        'type' => 'string',
+        'length' => 4,
+      ];
+    }
+    return $output;
   }
 
 }
