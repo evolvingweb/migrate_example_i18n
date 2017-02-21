@@ -1,14 +1,12 @@
-# Migration of "element" node translations from CSV.
+# Migration of data from CSV into translations of content type "element".
 #
-# Since a detailed description of many configuration parameters
-# has been provided in the 'hybrid_base' and 'hybrid_i18n' migrations,
-# they have not been repeated here. Kindly refer to those migrations
-# if you are looking for detailed descriptions for various paramters.
+# Many configuration parameters are described in the 'c11n_hybrid_base' and
+# 'c11n_hybrid_i18n' migrations, refer to those for more information.
 #
-# Furthermore, since the 'element_en' migration migrates base data for
-# this migration, it is highly recommended that you go through it first.
-
-# Migration metadata
+# The untranslated data for "element" nodes comes from 'c11n_element_en', so
+# refer to that before reading this.
+#
+# General metadata
 id: c11n_element_es
 label: Element data in Spanish
 migration_group: c11n_element
@@ -18,20 +16,20 @@ migration_tags:
   - csv
 # Migration source
 source:
-  # We will be importing from a CSV file, so we will require
-  # the migrate_source_csv module which introduces the CSV
-  # source plugin with the identifier "csv".
+  # We will be importing from a CSV file, so we need the
+  # 'migrate_source_csv' module. It provides a source with the ID 'csv.
   plugin: csv
-  # Specify the path to the CSV data source.
+  # Specify the name of the CSV file, which lives in the directory
+  # import/element. See c11n_migrate_i18n_migration_plugins_alter() for how
+  # this is found.
   path: 'element.data.es.csv'
   # Number of rows at the beginning which are not actual data.
   header_row_count: 1
-  # Unique ID
+  # The unique ID for each row is in this column.
   #
-  # It seems special characters are not supported in column names.
-  # Hence, I had to rename 'Símbolo' to 'Simbolo' (notice the accent
-  # mark on the letter 'i') to avoid getting error messages. Same
-  # goes with the other columns mentioned in the 'fields' parameter.
+  # Special characters are not supported in column names, so I renamed
+  # fields to remove accents. Eg: 'Símbolo' becomes 'Simbolo',
+  # (without an accent on the 'i').
   keys:
     - 'Simbolo'
   # Legend of source fields.
@@ -51,12 +49,12 @@ destination:
   translations: true
 # Migration processes
 process:
-  # Attach the translation to the already migrated base node.
+  # Attach the translation to the already-migrated node.
   nid:
     plugin: migration
     source: Simbolo
     migration: c11n_element_en
-  # For the rest of the fields, we migrate them as is.
+  # For the rest of the fields, migrate them as is.
   type: constants/node_element
   title: Nombre
   langcode: constants/lang_es
@@ -69,3 +67,4 @@ dependencies:
   enforced:
     module:
       - c11n_migrate_i18n
+      - content_translation

@@ -1,11 +1,9 @@
-# Migration of "element" node data from CSV.
+# Migration of data from CSV into content type "element".
 #
-# Since a detailed description of many configuration parameters
-# has been provided in the 'hybrid_base' and 'hybrid_i18n' migrations,
-# they have not been repeated here. Kindly refer to those migrations
-# if you are looking for detailed descriptions for various paramters.
-
-# Migration metadata
+# Many configuration parameters are described in the 'c11n_hybrid_base' and
+# 'c11n_hybrid_i18n' migrations, refer to those for more information.
+#
+# General metadata
 id: c11n_element_en
 label: Element data in English
 migration_group: c11n_element
@@ -15,15 +13,16 @@ migration_tags:
   - csv
 # Migration source
 source:
-  # We will be importing from a CSV file, so we will require
-  # the 'migrate_source_csv' module which introduces the CSV
-  # source plugin with the identifier "csv".
+  # We will be importing from a CSV file, so we need the
+  # 'migrate_source_csv' module. It provides a source with the ID 'csv.
   plugin: csv
-  # Specify the path to the CSV data source.
+  # Specify the name of the CSV file, which lives in the directory
+  # import/element. See c11n_migrate_i18n_migration_plugins_alter() for how
+  # this is found.
   path: 'element.data.en.csv'
   # Number of rows at the beginning which are not actual data.
   header_row_count: 1
-  # Unique ID
+  # The unique ID for each row is in this column.
   keys:
     - Symbol
   # Legend of source fields.
@@ -35,7 +34,7 @@ source:
     Symbol: 'Symbol'
     'Atomic Number': 'Atomic number'
     'Discovered By': 'Name of people who discovered the element'
-  # Static values for the migration.
+  # Constant values for the migration.
   constants:
     lang_en: en
     node_element: 'element'
@@ -49,10 +48,8 @@ process:
   title: Name
   langcode: constants/lang_en
   field_element_symbol: Symbol
-  # Since the source field contains multiple values separated
-  # by commas, we use the 'explode' plugin to break the value in
-  # the 'Discovered By' column into multiple values into an array
-  # of values.
+  # The 'Discovered By' column contains comma-separated values.
+  # We use the 'explode' plugin to split it into an array of values.
   field_element_discoverer:
     plugin: explode
     delimiter: ', '
