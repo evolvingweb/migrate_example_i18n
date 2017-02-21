@@ -1,3 +1,5 @@
 # Import data
 
-For the module to work, this _import_ directory must be copied to the _files_ directory of the site you are working with. I have included migration source data (the CSV files) in the module's directory just to be able to pack everything together and push it to a GitHub repo for making it all available to you with ease. However, the project expects the _import_ directory to be located in the _public_ directory of the site you are working with. Hence, I implemented `hook_install` to arrange the files such that, the CSV files are available to the _migrate_ module while running the migrations.
+The _c11n_element_ migrations import the CSV files found in this directory.
+Since this module could be installed in many potential places, a special hook
+is required to allow the migrations to find these files. See `c11n_migrate_i18n_migration_plugins_alter()` in `c11n_migrate_i18n.module`.

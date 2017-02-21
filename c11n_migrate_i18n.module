@@ -9,6 +9,8 @@
  * Implements hook_migration_plugins_alter().
  */
 function c11n_migrate_i18n_migration_plugins_alter(array &$migrations) {
+  // For each 'c11n_element' migration, alter its 'source' so that it looks
+  // wherever this module was installed for CSV files.
   foreach ($migrations as &$migration) {
     if (in_array('element', $migration['migration_tags'])) {
       $path =& $migration['source']['path'];
