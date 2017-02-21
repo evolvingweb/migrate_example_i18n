@@ -14,3 +14,4 @@ dependencies:
   - migrate_source_csv
   - node
   - taxonomy
+  - content_translation
