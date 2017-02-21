@@ -38,10 +38,7 @@ source:
   # Static values for the migration.
   constants:
     lang_en: en
-    uid_root: 1
     node_element: 'element'
-    bool_0: 0
-    bool_1: 1
 # Migration destination
 destination:
   plugin: 'entity:node'
@@ -51,10 +48,6 @@ process:
   type: constants/node_element
   title: Name
   langcode: constants/lang_en
-  uid: constants/uid_root
-  sticky: constants/bool_0
-  status: constants/bool_1
-  promote: constants/bool_0
   field_element_symbol: Symbol
   # Since the source field contains multiple values separated
   # by commas, we use the 'explode' plugin to break the value in
