@@ -55,7 +55,12 @@ process:
   # The type of node we wish to create, in this case 'article'.
   type: constants/node_article
   # Destination node language.
-  langcode: language
+  # If the D6 node is "Language neutral", this will be empty. So
+  # default it to 'und'.
+  langcode:
+    plugin: default_value
+    source: language
+    default_value: und
   # The body is a special case, since it has both a value and a format.
   # We assign body data as the value, and 'full_html' as the format.
   'body/value': body
