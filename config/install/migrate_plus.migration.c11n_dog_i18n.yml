@@ -20,7 +20,7 @@ source:
   # We deal only with translations in this migration.
   translations: true
   # Specify source database.
-  key: drupal_7a
+  key: drupal_7_content
   # Static values for the migration.
   constants:
     uid_root: 1

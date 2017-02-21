@@ -30,7 +30,7 @@ source:
   # The type of nodes we want to migrate.
   node_type: article
   # Specify source database.
-  key: drupal_7a
+  key: drupal_7_content
   # Static values for the migration.
   constants:
     uid_root: 1

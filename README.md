@@ -15,8 +15,8 @@ In this project, we would briefly discuss how to migrate translated content into
 * Install the module. `drush en c11n_migrate -y`
 * Create source database for Drupal 6 / Drupal 7 examples and import the relevant SQL dump:
   * For Drupal 6, import [dump/sandbox_d6.sql]
-  * For Drupal 7 content translations, import [dump/sandbox_d7a.sql]
-  * For Drupal 7 entity translations, import [dump/sandbox_d7b.sql]
+  * For Drupal 7 content translations, import [dump/sandbox_d7_content.sql]
+  * For Drupal 7 entity translations, import [dump/sandbox_d7_entity.sql]
 * Configure additional databases in Drupal 8 - refer to [dump/settings.local.php]
   * To avoid confusion, better to name the databases the same way I have named them. Otherwise, you might have to change certain parameters in the migration definitions.
 * See current status of the migrations. `drush migrate-status`

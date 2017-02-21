@@ -43,8 +43,8 @@ $databases['drupal_6']['default'] = array(
 
 // Migration database: Drupal 7
 // Uses 'content_translation' and 'i18n' modules for i18n.
-$databases['drupal_7a']['default'] = array(
-  'database' => 'sandbox_d7a',
+$databases['drupal_7_content']['default'] = array(
+  'database' => 'sandbox_d7_content',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
   'username' => 'root',
@@ -56,8 +56,8 @@ $databases['drupal_7a']['default'] = array(
 
 // Migration database: Drupal 7
 // Uses 'entity_translation' and 'title' modules for i18n.
-$databases['drupal_7b']['default'] = array(
-  'database' => 'sandbox_d7b',
+$databases['drupal_7_entity']['default'] = array(
+  'database' => 'sandbox_d7_entity',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
   'username' => 'root',

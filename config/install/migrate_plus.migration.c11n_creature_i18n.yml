@@ -23,7 +23,7 @@ source:
   # We deal only with translations in this migration.
   translations: true
   # Specify the database from which data is to be read.
-  key: drupal_7b
+  key: drupal_7_entity
   # Static values for the migration.
   constants:
     uid_root: 1
