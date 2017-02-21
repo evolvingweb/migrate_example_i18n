@@ -2,99 +2,102 @@
 
 namespace Drupal\c11n_migrate_i18n\Plugin\migrate\source;
 
-use \Drupal\Core\Database\Query\SelectInterface;
-use \Drupal\node\Plugin\migrate\source\d7\Node;
+use Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity;
+use \Drupal\node\Plugin\migrate\source\d7\Node as D7Node;
 use \Drupal\migrate\Row;
 
 /**
- * Drupal 7 node (article) source from database.
+ * Drupal 7 node migrate source.
  *
- * We will use this source plugin for reading Drupal 7
- * nodes translated with the 'entity_translation' and
- * 'title' modules.
+ * Source plugin for reading Drupal 7 nodes translated with the
+ * 'entity_translation' module.
+ *
+ * Use of the 'title' module for translated titles in D7 works too.
  *
  * @MigrateSource(
  *   id = "d7_node_entity_translation"
  * )
  */
-class D7NodeEntityTranslation extends Node {
+class D7NodeEntityTranslation extends D7Node {
 
   /**
-   * This method is responsible for generating a query
-   * which would eventually be used for discovering items
-   * in the D7 install. The query is used for reading items
-   * during the migration and also for displaying counts
-   * in migration status.
-   *
-   * We override this method so that we can add support
-   * for the "source/translations" parameter. We had to
-   * write a separate source plugin for this case because
-   * translations using the 'entity_translation' module
-   * work very differently than 'content_translation'.
-   * So, we have to modify the query and utilize various
-   * fields from the 'entity_translation' table.
+   * The D7 translation value indicating entity translation.
    */
-  public function query() {
+  const ENTITY_TRANSLATION_ENABLED = 4;
 
-    $query = parent::query();
-
-    // If translations are enabled, then we need to use the
-    // 'entity_translation' table and read certain data from
-    // there.
-    //
-    // Once the 'translations' parameter is supported in core,
-    // the 'query' method might check for another parameter
-    // like 'translation_type: entity_translation' to determine
-    // whether to execute the modifications we have done below.
-    if (!empty($this->configuration['translations'])) {
-
-      $query->innerJoin('entity_translation', 'et', 'et.entity_type = :entity_type AND et.entity_id = n.nid', [
-        ':entity_type' => 'node',
-      ]);
-
-      // A list of fields which we wish to override with fields
-      // from the 'entity_translation' table.
-      $field_override_coll = [
-        'language' => 'language',
-        'revision_uid' => 'uid',
-        'status' => 'status',
-        'translate' => 'translate',
-        'created' => 'created',
-        'changed' => 'changed',
-        'vid' => 'revision_id',
-        'tnid' => 'entity_id',
-      ];
-
-      // Remove certain fields which we would override with
-      // equivalent fields in the 'entity_translation' table.
-      $field_query_coll =& $query->getFields();
-      foreach ($field_override_coll as $column_alias => $column_name) {
-        unset($field_query_coll[$column_alias]);
-        $query->addField('et', $column_name, $column_alias);
-      }
-
-      // Make sure we only read translations.
-      $query->condition('et.source', '', '<>');
-
+  /**
+   * Check if this bundle is entity-translatable.
+   *
+   * @return bool
+   *   Whether the bundle uses entity translation.
+   */
+  protected function isEntityTranslatable() {
+    if (!isset($this->configuration['node_type'])) {
+      return FALSE;
     }
 
-    return $query;
-
+    $variable = 'language_content_type_' . $this->configuration['node_type'];
+    $translation = $this->variableGet($variable, 0);
+    return $translation == self::ENTITY_TRANSLATION_ENABLED;
   }
 
   /**
-   * Override this method so that we can pass a 'language'
-   * argument to our modified self::getFieldValues() method
-   * so that we only attach field values in the correct
-   * language.
+   * Build a query which finds D7 nodes, one per row.
    *
-   * If the D7/Node migration source had support for loading
-   * field values in a specific language, we would not have
-   * had to override this method. This issue is marked as a
-   * 'todo' for now, so we override this method.
+   * The query is used to read items during the migration, and to count
+   * items for the migration status.
    *
-   * Basically, in this method, we load and attach field values
-   * for the given base node / translation in it's language.
+   * Since D7 Entity Translation works very differently from Content
+   * Translation, we have to modify the query quite significantly.
+   *
+   * @return \Drupal\Core\Database\Query\SelectInterface
+   *   The soure query.
+   */
+  public function query() {
+    $query = parent::query();
+    if (!$this->isEntityTranslatable()) {
+      return $query;
+    }
+
+    // Entity Translation data is kept in the entity_translation table.
+    $query->join('entity_translation', 'et',
+      "et.entity_type = :entity_type AND et.entity_id = n.nid",
+      [':entity_type' => 'node']
+    );
+
+    // Use only originals, or only translations, depending on our configuration.
+    $operator = empty($this->configuration['translations']) ? '=' : '<>';
+    $query->condition('et.source', '', $operator);
+
+    // A list of fields to override from the 'entity_translation' table.
+    $override = [
+      'language' => 'language',
+      'uid' => 'uid',
+      'status' => 'status',
+      'translate' => 'translate',
+      'created' => 'created',
+      'changed' => 'changed',
+      'vid' => 'revision_id',
+    ];
+    $fields =& $query->getFields();
+    foreach ($override as $alias => $et_column) {
+      unset($fields[$alias]);
+      $query->addField('et', $et_column, $alias);
+    }
+
+    return $query;
+  }
+
+  /**
+   * Adds additional data to the row.
+   *
+   * Overridden to pass the $language argument to getFieldValues().
+   *
+   * @param \Drupal\Migrate\Row $row
+   *   The row object.
+   *
+   * @return bool
+   *   FALSE if this row needs to be skipped.
    */
   public function prepareRow(Row $row) {
     // Get field identifiers.
@@ -105,14 +108,15 @@ class D7NodeEntityTranslation extends Node {
       // Get field values.
       $row->setSourceProperty($field, $this->getFieldValues('node', $field, $nid, $vid, $language));
     }
+
+    return FieldableEntity::prepareRow($row);
   }
 
   /**
    * Retrieves field values for a single field of a single entity.
    *
-   * This method has been overridden just to support the $language
-   * argument. Without that, one cannot specify the language in which
-   * one wants to read the fields.
+   * Overridden to support the $language argument, so that we can retrieve
+   * values for a specific languages.
    *
    * @param string $entity_type
    *   The entity type.
@@ -123,13 +127,12 @@ class D7NodeEntityTranslation extends Node {
    * @param int|null $revision_id
    *   (optional) The entity revision ID.
    * @param string|null $language
-   *   (optional) The language.
+   *   (optional) The language code.
    *
    * @return array
    *   The raw field values, keyed by delta.
    */
   protected function getFieldValues($entity_type, $field, $entity_id, $revision_id = NULL, $language = NULL) {
-
     $table = (isset($revision_id) ? 'field_revision_' : 'field_data_') . $field;
     $query = $this->select($table, 't')
       ->fields('t')
@@ -159,28 +162,19 @@ class D7NodeEntityTranslation extends Node {
    * {@inheritdoc}
    */
   public function getIds() {
-    $output = parent::getIds();
-    // Since content translated with 'entity_translate' have the same
-    // node ID, no matter what language, translated node records
-    // cannot uniquely be identified with just the 'node.nid' column.
-    // Hence, we need to include the translation 'language' to identify
-    // translated records uniquely.
-    //
-    // For example, for nid=6, if there are 3 translations, each one of
-    // them can uniquely be identified with a composite key like, '6:en',
-    // '6:es', '6:fr'.
-    //
-    // Without this, the migration plugin will process the first translation
-    // it encounters and for any other translation, it will see that the
-    // node with ID 6 has already been processed and it will ignore it.
-    if (!empty($this->configuration['translations'])) {
-      $output['language'] = [
-        'alias' => 'et',
+    $ids = parent::getIds();
+    if (!empty($this->configuration['translations'])
+      && $this->isEntityTranslatable()
+    ) {
+      // With Entity Translation, each translation has the same node ID.
+      // To uniquely identify a row, we therefore need both nid and
+      // language.
+      $ids['language'] = [
         'type' => 'string',
-        'length' => 4,
+        'alias' => 'et',
       ];
     }
-    return $output;
+    return $ids;
   }
 
 }
