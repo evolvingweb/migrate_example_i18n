@@ -1,0 +1,17 @@
+uuid: b4587545-bcc0-4f50-abc4-8ec93ddf200c
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+name: Element
+type: element
+description: 'Use <em>Element</em> to add chemical elements to your website.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false

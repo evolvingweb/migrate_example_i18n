@@ -1,0 +1,19 @@
+uuid: 33dfb14a-2377-4dfa-993c-c7a72620dacc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_element_symbol
+    - node.type.element
+id: node.element.field_element_symbol
+field_name: field_element_symbol
+entity_type: node
+bundle: element
+label: Symbol
+description: 'The unique chemical symbol for the element.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

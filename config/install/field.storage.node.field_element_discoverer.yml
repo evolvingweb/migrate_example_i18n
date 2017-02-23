@@ -1,0 +1,21 @@
+uuid: ccfc20d5-44cc-4c17-acb0-67248aae1b43
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_element_discoverer
+field_name: field_element_discoverer
+entity_type: node
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

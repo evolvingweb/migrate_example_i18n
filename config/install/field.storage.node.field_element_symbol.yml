@@ -1,0 +1,21 @@
+uuid: c625c33c-5baf-43da-968c-b936c9eacc6c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_element_symbol
+field_name: field_element_symbol
+entity_type: node
+type: string
+settings:
+  max_length: 4
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,19 @@
+uuid: d87e4085-2ad7-4919-9328-e490ecf37879
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_element_discoverer
+    - node.type.element
+id: node.element.field_element_discoverer
+field_name: field_element_discoverer
+entity_type: node
+bundle: element
+label: Discoverers
+description: 'Names of scientists who discovered the element.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
