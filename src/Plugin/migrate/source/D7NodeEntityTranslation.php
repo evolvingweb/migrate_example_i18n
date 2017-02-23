@@ -32,6 +32,7 @@ class D7NodeEntityTranslation extends D7Node {
    *   Whether the bundle uses entity translation.
    */
   protected function isEntityTranslatable() {
+    // Cannot determine this without entity bundle.
     if (!isset($this->configuration['node_type'])) {
       return FALSE;
     }
@@ -54,6 +55,8 @@ class D7NodeEntityTranslation extends D7Node {
    *   The soure query.
    */
   public function query() {
+    // Start with the parent query and see if entity_translations
+    // are enabled for the nodes to be migrated.
     $query = parent::query();
     if (!$this->isEntityTranslatable()) {
       return $query;
