@@ -44,7 +44,7 @@ Since this is an advanced migration topic, it is assumed that you already have t
 
 There is nothing special about the module definition as such, however, here are certain things which need a mention:
 
-* In Drupal 8, unlike Drupal 7, a module only provides a .module file only if required. In our example, we do not need the .module file, so I have not created one.
+* In Drupal 8, unlike Drupal 7, a module only provides a .module file only if required. In our example, we use that file to define some hooks which are required to make this module work correctly.
 * I usually prefer to name project-specific custom modules with a prefix of `c11n` (being the numeronym for _customization_). This way, we have a naming convention for custom modules and we can copy any custom module to another site without worrying about having to change prefixes. You can name your module anything though - personal preference.
 * Though the migrate module is in Drupal 8 core, we need most of these dependencies to enable / enhance migrations on the site:
   * [migrate_plus](https://www.drupal.org/project/migrate_plus)
