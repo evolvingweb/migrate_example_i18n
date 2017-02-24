@@ -47,11 +47,10 @@ There is nothing special about the module definition as such, however, here are 
 * In Drupal 8, unlike Drupal 7, a module only provides a .module file only if required. In our example, we use that file to define some hooks which are required to make this module work correctly.
 * I usually prefer to name project-specific custom modules with a prefix of `c11n` (being the numeronym for _customization_). This way, we have a naming convention for custom modules and we can copy any custom module to another site without worrying about having to change prefixes. You can name your module anything though - personal preference.
 * Though the migrate module is in Drupal 8 core, we need most of these dependencies to enable / enhance migrations on the site:
-  * [migrate_plus](https://www.drupal.org/project/migrate_plus)
-  * [migrate_tools](https://www.drupal.org/project/migrate_tools)
-  * [migrate_source_csv](https://www.drupal.org/project/migrate_source_csv)
-  * migrate_drupal: We need this module to use Drupal 6 and Drupal 7 sites as data sources for our migration.
-* The [c11n_migrate_i18n.install](c11n_migrate_i18n.install) is not required under normal circumstances, however, I have implemented `hook_install()` and `hook_uninstall()` in that file. See the [import/README.md](import/README.md) file for more information.
+  * [migrate_plus](https://www.drupal.org/project/migrate_plus): To make our life easy
+  * [migrate_tools](https://www.drupal.org/project/migrate_tools): To make our life easy
+  * [migrate_source_csv](https://www.drupal.org/project/migrate_source_csv): To use CSV files as migration data sources.
+  * migrate_drupal: We need this module to use Drupal 6 and Drupal 7 sites as data sources for our migration. This module is a part of the Drupal 8.x core.
 
 # Drupal 8 configuration
 
@@ -73,10 +72,10 @@ Migrating translated content into Drupal 8 usually involves two steps:
 * Base migration: Migrate data in base language and ignore translations.
 * Translation migration: Migrate only the translations (and ignore data in base language). These translations are usually linked to the content we create in the first step, thereby leaving us with only one entity with multiple translations.
 
-Before jumping into writing these migrations, it is important to mention that Drupal 6 and Drupal 8 translations work very differently. Here's the difference in a nut-shell:
+Before jumping into writing these migrations, it is important to mention that Drupal 6 and Drupal 8 translations work very differently. Here's the difference in a nutshell:
 
-* Drupal 6: First, you create a piece of content in it's base language. Then, you add a translation of it. However, when you create a translation, another fresh node is created with a different ID and a property named `tnid` is used to save the ID of the original node, thereby recording the fact that the node is a translation of another node. For language-neutral content the `tnid` is set to 0.
-* Drupal 8: First, you create a piece of content in it's base language. Then, you add a translation of it. When you create the translation, no new node is created. The translation is saved against the original node itself but measures are taken to save the translations in the other language.
+* **Drupal 6:** First, you create a piece of content in it's base language. Then, you add a translation of it. However, when you create a translation, another fresh node is created with a different ID and a property named `tnid` is used to save the ID of the original node, thereby recording the fact that the node is a translation of another node. For language-neutral content the `tnid` is set to 0.
+* **Drupal 8:** First, you create a piece of content in it's base language. Then, you add a translation of it. When you create the translation, no new node is created. The translation is saved against the original node itself but measures are taken to save the translations in the other language.
 
 Hence we follow the two step process for migrating translated content from Drupal 6.
 
@@ -88,16 +87,16 @@ Having created the migration group, we would create our first migration with the
 * **migration_group:** The group to which the migration belongs.
 * **migration_tags:** A set of tags for the migration.
 * **source:**
-  * **plugin:** Since we want to import data from a Drupal installation, we need to set the source plugin to `d6_node`. The `d6_node` source plugin is introduced by the `migrate_drupal` module and it helpss read nodes from a Drupal 6 installation without having to manually write queries to read the nodes and attaching the relevant fields, etc.
-  * **node_type:** With this parameter we tell the source plugin that we are interested in a particular node type only, in this case, _story_.
+  * **plugin:** Since we want to import data from a Drupal installation, we need to set the source plugin to `d6_node`. The `d6_node` source plugin is introduced by the `migrate_drupal` module and it helps us read nodes from a Drupal 6 installation without having to manually write queries to read the nodes and attaching the relevant fields, etc.
+  * **node_type:** With this parameter we tell the source plugin that we are interested in reading a particular node type only, in this case, _story_.
   * **key:** Since we intend to read the Drupal 6 data from a secondary database connection (the primary one being the Drupal 8 database), we need to define the secondary connection in the `$databases` global variable in our `settings.local.php` file. Once done, we need to mention the `key` of the `$databases` array where the Drupal 6 connection is defined.
-  * **target:** Optionally, you can also define a _target_. This parameter defaults to `default` and should be defined if your connection is not defined in the `default` sub-key of `$databases`.
+  * **target:** Optionally, you can also define a _target_. This parameter defaults to `default` and should be defined if your connection is not defined in the `default` sub-key of `$databases`. But usually this parametre is left as `default`, so we can safely omit it.
   * **constants:** We define some static / hard-coded values under this parameter.
   * **translations:** We DO NOT define the translations parameter while migrating base data. Omiting the parameter or setting it to `false` tells the source plugin that we are only interested in migrating non-translations, i.e. content in base language and language-neutral content. It is important NOT to specify this parameter otherwise you will end up with separate nodes for every language variation of each node.
 * **destination:**
   * **plugin:** Since we want to create node entities, we specify this as `entity:node`. That's it.
   * **translations:** We DO NOT define the translations parameter while migrating base data. Omiting the parameter or setting it to `false` tells the destination plugin that we are interested in creating fresh nodes for each record as opposed to associating them as translations for existing nodes.
-* **process:** This is where we tell migrate how to map the old node properties to the new node properties. Most of the properties have been assigned as is, without alteration, however, some note-worthy properties have been discussed below:
+* **process:** This is where we tell migrate how to map the old node properties to the new node properties. Most of the properties have been assigned as is, without alteration, however, some noteworthy properties have been discussed below:
   * **type:** We use a constant value to define the type of nodes we wish to create from the imported data.
   * **langcode:** The `langcode` parameter was formerly `language` in Drupal 6. So we need to assign it properly so that Drupal 8 knows as to in which language the node is to be created. We use the `default_value` plugin here to provide a fallback to the `und` or `undefined` language just in case some node is out of place, however, it is highly unlikely that it happens.
   * **body:** We can assign this property directly to the `body` property. However, the Drupal 6 data is treated as plain text in Drupal 8 in that case. So migrating with `body: body`, the imported nodes in Drupal 8 would show visible HTML markup on your site. To resolve this, we explicitly assign the old `body` to `body/value` and specify that the text is in HTML by writing `body/format: constants/body_format`. That tells Drupal to treat the body as _Full HTML_.
@@ -106,7 +105,7 @@ This takes care of the base data. If you run this migration with `drush migrate-
 
 ## Hybrid translation migration
 
-We are half-way through now and all that's missing is migrating translations of the nodes we migrated above. To do this, we create another migration with the ID [c11n_hybrid_i18n](config/install/migrate_plus.migration.c11n_hybrid_i18n.yml). The migration definition remains mostly the same but has the following important differences from the base migration:
+We are halfway through now and all that's missing is migrating translations of the nodes we migrated above. To do this, we create another migration with the ID [c11n_hybrid_i18n](config/install/migrate_plus.migration.c11n_hybrid_i18n.yml). The migration definition remains mostly the same but has the following important differences as compared to the base migration:
 
 * **source:**
   * **translations:** We define this parameter to make the source plugin read only translation nodes and to make it ignore the nodes we already migrated in the base migration.
