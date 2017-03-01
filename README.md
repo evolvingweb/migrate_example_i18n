@@ -177,7 +177,7 @@ To achieve this, we define the [c11n_element_en](config/install/migrate_plus.mig
 * **destination:**
   * **plugin:** Nothing fancy here. We aim to create _node_ entities, so we set the `plugin` as `entity:node`.
   * **translations:** Since we are importing the content in base language, we do not specify the `translations` parameter. This will make Drupal create individual nodes for every record.
-* **process:** Most of the properties are migrated as is. However, here are some of them which need some properties which need a special explication:
+* **process:** Most of the properties are migrated as is. However, here are some of them which need a special explication:
   * **type:** We hard-code the type of nodes we wish to create, i.e., `type: constants/node_element`.
   * **langcode:** Since all source records are in English, we inform Drupal to save the destination nodes in English as well. We do this by explicitly specifying `langcode` as `en`.
   * **field_element_discoverer:** This field is a bit tricky. Looking at the source, we realize that every element has one or more discoverers. Multiple discoverer names are separated by commas. Thus, we use `plugin: explode` and `delimiter: ', '` to split multiple records into arrays. With the values split into arrays, Drupal understands and saves the column data as multiple values.
