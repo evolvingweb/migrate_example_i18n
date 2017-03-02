@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Installation code for migrate_example_i18n.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function migrate_example_i18n_install() {
+  // Ensure content_translation fields are up to date.
+  $update_manager = \Drupal::service('content_translation.updates_manager');
+  $update_manager->onConfigImporterImport();
+}
