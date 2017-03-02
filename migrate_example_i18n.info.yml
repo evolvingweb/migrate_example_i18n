@@ -1,9 +1,9 @@
 # Package info
-name: 'C11N: Migrate multi-language content'
-description: Module for performing site-specific migrations.
+name: 'Migrate Example (multilingual)'
+description: Examples of multilingual migrations.
 type: module
 core: 8.x
-package: Custom
+package: Examples
 
 # Dependencies
 dependencies:

@@ -1,7 +1,7 @@
 # Migration of "article" node data from Drupal 7.
 #
 # This file demonstrates migration of content translated with
-# the 'entity_translation' module.
+# the 'content_translation' module.
 #
 # Since a detailed description of many configuration parameters
 # has been provided in the 'hybrid_base' and 'hybrid_i18n' migrations,
@@ -9,9 +9,9 @@
 # if you are looking for detailed descriptions for various paramters.
 
 # Migration metadata
-id: c11n_creature_base
-label: Creature base data
-migration_group: c11n_creature
+id: example_dog_base
+label: Dog base data
+migration_group: example_dog
 migration_tags:
   - node
   - article
@@ -25,12 +25,12 @@ source:
   # even if you specify "translations: flase" (or omit that line),
   # all nodes, including translations, are imported.
   #
-  # To prevent this, I chose to write the method D7NodeEntityTranslation::query().
-  plugin: d7_node_entity_translation
+  # To prevent this, I chose to write the method D7NodeContentTranslation::query().
+  plugin: d7_node_content_translation
   # The type of nodes we want to migrate.
   node_type: article
   # Specify source database.
-  key: drupal_7_entity
+  key: drupal_7_content
   # Static values for the migration.
   constants:
     uid_root: 1
@@ -40,15 +40,19 @@ destination:
   plugin: 'entity:node'
 # Migration processes
 process:
+  # Specify the type of node we wish to create.
   type: constants/node_article
+  # Destination node language.
   langcode:
     plugin: default_value
     source: language
     default_value: und
+  # We assign the root user as the author of migrated nodes.
+  uid: 'constants/uid_root'
+  # Some other properties which we migrate as is.
   title: title
   body: body
   field_one_liner: field_one_liner
-  uid: 'constants/uid_root'
   sticky: sticky
   status: status
   promote: promote
@@ -56,4 +60,4 @@ process:
 dependencies:
   enforced:
     module:
-      - c11n_migrate_i18n
+      - migrate_example_i18n

@@ -27,6 +27,6 @@ d7_entity_tran:
 d8:
 	drush use $(SITE)
 	drush dl migrate_plus migrate_tools migrate_source_csv -y
-	drush en c11n_migrate_i18n -y
+	drush en migrate_example_i18n -y
 	drush cr
 	exit;

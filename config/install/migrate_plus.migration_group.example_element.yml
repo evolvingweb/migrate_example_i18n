@@ -1,9 +1,9 @@
 # Migration group 'element' migrations
-id: c11n_element
+id: example_element
 label: Element migration
 description: Migration of chemical element data (non-Drupal source).
 source_type: CSV files
 dependencies:
   enforced:
     module:
-      - c11n_migrate_i18n
+      - migrate_example_i18n

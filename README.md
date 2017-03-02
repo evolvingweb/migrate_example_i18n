@@ -11,8 +11,8 @@ In this project, we would briefly discuss how to migrate translated content into
 
 # Quick start
 
-* Download the files from this repo and put them in the `modules/custom/c11n_migrate_i18n` directory. `git clone https://github.com/jigarius/drupal-migration-example.git modules/custom/c11n_migrate`
-* Install the module. `drush en c11n_migrate -y`
+* Download the files from this repo and put them in the `modules/custom/migrate_example_i18n` directory. `git clone https://github.com/jigarius/drupal-migration-example.git modules/custom/migrate_example_i18n`
+* Install the module. `drush en migrate_example_i18n -y`
 * Create source database for Drupal 6 / Drupal 7 examples and import the relevant SQL dump:
   * For Drupal 6, import [dump/sandbox_d6.sql]
   * For Drupal 7 content translations, import [dump/sandbox_d7_content.sql]
@@ -26,10 +26,10 @@ In this project, we would briefly discuss how to migrate translated content into
 
 We have 4 sets of data from various sources which we have to migrate into Drupal 8:
 
-* **Drupal 6 - Content Translation:** A bunch of _story_ nodes about hybrid animals need to be migrated to Drupal 8. These have been handled in the `config/install/migrate_plus.migration.c11n_hybrid_*.yml` files.
-* **Drupal 7 - Content Translation:** A bunch of _article_ nodes about dogs need to be migrated to Drupal 8. These have been handled in the `config/install/migrate_plus.migration.c11n_dog_*.yml` files.
-* **Drupal 7 - Entity Translation:** A bunch of _article_ nodes about mythological creatures need to be migrated to Drupal 8. These have been handled in the `config/install/migrate_plus.migration.c11n_creature_*.yml` files.
-* **Non-drupal source:** A table of chemical elements is provided in 2 different files - one in English and the other in Spanish. We need to migrate the contents of these two files and create nodes having translations in English and Spanish. These have been handled in the `config/install/migrate_plus.migration.c11n_element_*.yml` files.
+* **Drupal 6 - Content Translation:** A bunch of _story_ nodes about hybrid animals need to be migrated to Drupal 8. These have been handled in the `config/install/migrate_plus.migration.example_hybrid_*.yml` files.
+* **Drupal 7 - Content Translation:** A bunch of _article_ nodes about dogs need to be migrated to Drupal 8. These have been handled in the `config/install/migrate_plus.migration.example_dog_*.yml` files.
+* **Drupal 7 - Entity Translation:** A bunch of _article_ nodes about mythological creatures need to be migrated to Drupal 8. These have been handled in the `config/install/migrate_plus.migration.example_creature_*.yml` files.
+* **Non-drupal source:** A table of chemical elements is provided in 2 different files - one in English and the other in Spanish. We need to migrate the contents of these two files and create nodes having translations in English and Spanish. These have been handled in the `config/install/migrate_plus.migration.example_element_*.yml` files.
 
 # Assumptions
 
@@ -45,7 +45,6 @@ Since this is an advanced migration topic, it is assumed that you already have t
 There is nothing special about the module definition as such, however, here are certain things which need a mention:
 
 * In Drupal 8, unlike Drupal 7, a module only provides a .module file only if required. In our example, we use that file to define some hooks which are required to make this module work correctly.
-* I usually prefer to name project-specific custom modules with a prefix of `c11n` (being the numeronym for _customization_). This way, we have a naming convention for custom modules and we can copy any custom module to another site without worrying about having to change prefixes. You can name your module anything though - personal preference.
 * Though the migrate module is in Drupal 8 core, we need most of these dependencies to enable / enhance migrations on the site:
   * [migrate_plus](https://www.drupal.org/project/migrate_plus): To make our life easy
   * [migrate_tools](https://www.drupal.org/project/migrate_tools): To make our life easy
@@ -63,9 +62,9 @@ Before migrating translated content into Drupal 8, one must make sure that their
 
 # Migrate hybrids: Drupal 6 content translations to Drupal 8
 
-Since Drupal 6 is older, it looks like a better place to start. To get started, we create a migration group named [c11n_hybrid](config/install/migrate_plus.migration_group.c11n_hybrid.yml) (optional). This would let us execute all grouped migrations with one command like
+Since Drupal 6 is older, it looks like a better place to start. To get started, we create a migration group named [example_hybrid](config/install/migrate_plus.migration_group.example_hybrid.yml) (optional). This would let us execute all grouped migrations with one command like
 
-    drush migrate-import --group=c11n_hybrid --update
+    drush migrate-import --group=example_hybrid --update
 
 Migrating translated content into Drupal 8 usually involves two steps:
 
@@ -81,7 +80,7 @@ Hence we follow the two step process for migrating translated content from Drupa
 
 ## Hybrid base migration
 
-Having created the migration group, we would create our first migration with the ID [c11n_hybrid_base](config/install/migrate_plus.migration.c11n_hybrid_base.yml). We do this by defining some usual parameters:
+Having created the migration group, we would create our first migration with the ID [example_hybrid_base](config/install/migrate_plus.migration.example_hybrid_base.yml). We do this by defining some usual parameters:
 
 * **id:** An unique ID for the migration.
 * **migration_group:** The group to which the migration belongs.
@@ -101,22 +100,22 @@ Having created the migration group, we would create our first migration with the
   * **langcode:** The `langcode` parameter was formerly `language` in Drupal 6. So we need to assign it properly so that Drupal 8 knows as to in which language the node is to be created. We use the `default_value` plugin here to provide a fallback to the `und` or `undefined` language just in case some node is out of place, however, it is highly unlikely that it happens.
   * **body:** We can assign this property directly to the `body` property. However, the Drupal 6 data is treated as plain text in Drupal 8 in that case. So migrating with `body: body`, the imported nodes in Drupal 8 would show visible HTML markup on your site. To resolve this, we explicitly assign the old `body` to `body/value` and specify that the text is in HTML by writing `body/format: constants/body_format`. That tells Drupal to treat the body as _Full HTML_.
 
-This takes care of the base data. If you run this migration with `drush migrate-import c11n_hybrid_i18n --update`, all Drupal 6 nodes which are in base language or are language-neutral will be migrated into Drupal 8.
+This takes care of the base data. If you run this migration with `drush migrate-import example_hybrid_i18n --update`, all Drupal 6 nodes which are in base language or are language-neutral will be migrated into Drupal 8.
 
 ## Hybrid translation migration
 
-We are halfway through now and all that's missing is migrating translations of the nodes we migrated above. To do this, we create another migration with the ID [c11n_hybrid_i18n](config/install/migrate_plus.migration.c11n_hybrid_i18n.yml). The migration definition remains mostly the same but has the following important differences as compared to the base migration:
+We are halfway through now and all that's missing is migrating translations of the nodes we migrated above. To do this, we create another migration with the ID [example_hybrid_i18n](config/install/migrate_plus.migration.example_hybrid_i18n.yml). The migration definition remains mostly the same but has the following important differences as compared to the base migration:
 
 * **source:**
   * **translations:** We define this parameter to make the source plugin read only translation nodes and to make it ignore the nodes we already migrated in the base migration.
 * **destination:**
   * **translations:** We define this parameter to make the destination plugin create translations for existing nodes instead of creating fresh nodes for each source record.
 * **process:**
-  * **nid:** Are we defining an ID for the nodes to be generated? Yes, we are. With the `nid` parameter, we use the `migration` plugin and tell Drupal to create translations for the nodes we created during the base migration, like `plugin: migration` and `migration: c11n_hybrid_base`. So, for every record, Drupal derives the ID of the relevant node created during the base migration and creates a translation for it.
+  * **nid:** Are we defining an ID for the nodes to be generated? Yes, we are. With the `nid` parameter, we use the `migration` plugin and tell Drupal to create translations for the nodes we created during the base migration, like `plugin: migration` and `migration: example_hybrid_base`. So, for every record, Drupal derives the ID of the relevant node created during the base migration and creates a translation for it.
   * **langcode:** This is important because here we define the language in which the translation should be created.
-* **migration_dependencies:** Since we cannot associate the translations to the base nodes if the base nodes do not exist, we tell Drupal that this migration depends on the base migration `c11n_hybrid_base`. That way, one will be forced to run the base migration before running this migration.
+* **migration_dependencies:** Since we cannot associate the translations to the base nodes if the base nodes do not exist, we tell Drupal that this migration depends on the base migration `example_hybrid_base`. That way, one will be forced to run the base migration before running this migration.
 
-That's it! We can run our translation migration with `drush migrate-import c11n_hybrid_i18n --update` and the translations will be imported into Drupal 8. You can check if everything went alright by clicking the `Translate` option for any translated node in Drupal 8. If everything went correctly, you should see that the node exists in the original language and has one or more translations.
+That's it! We can run our translation migration with `drush migrate-import example_hybrid_i18n --update` and the translations will be imported into Drupal 8. You can check if everything went alright by clicking the `Translate` option for any translated node in Drupal 8. If everything went correctly, you should see that the node exists in the original language and has one or more translations.
 
 # Migrate dogs: Drupal 7 content translations to Drupal 8
 
@@ -135,7 +134,7 @@ Apart from that, we have everything going just the way we did for Drupal 6.
 
 ## Dog base migration
 
-We define a [c11n_dog_base](config/install/migrate_plus.migration.c11n_dog_base.yml) migration to migrate all non-translations first. This includes base translations and language-neutral content.
+We define a [example_dog_base](config/install/migrate_plus.migration.example_dog_base.yml) migration to migrate all non-translations first. This includes base translations and language-neutral content.
 
 * We use our `d7_node_content_translation` plugin as the `source` plugin.
 * We do not declare `translations` parameter for the `source` plugin, so that only non-translations are read from Drupal 7.
@@ -143,14 +142,14 @@ We define a [c11n_dog_base](config/install/migrate_plus.migration.c11n_dog_base.
 
 ## Dog translation migration
 
-We define a [c11n_dog_i18n](config/install/migrate_plus.migration.c11n_dog_i18n.yml) migration to migrate all translations.
+We define a [example_dog_i18n](config/install/migrate_plus.migration.example_dog_i18n.yml) migration to migrate all translations.
 
 * We use our `d7_node_content_translation` plugin as the `source` plugin.
 * We define `translations: true` for the source plugin so that only translated nodes are read from Drupal 7
 * We define `translations: true` for the destination plugin so that instead of the data is migrated as translations for nodes created during the base migration.
 * We make sure that the `i18n` migration depends on the `base` migration.
 
-That's it! We can run the base and i18n migrations one by one and all Drupal 7 nodes would be imported to Drupal 8 along with their translations. To execute both the migrations at once, we can run the command `drush migrate-import c11n_dog_i18n --update --execute-dependencies`. The `--execute-dependencies` parameter will ensure that the `base` migration runs before the `i18n` migration. Perfect!
+That's it! We can run the base and i18n migrations one by one and all Drupal 7 nodes would be imported to Drupal 8 along with their translations. To execute both the migrations at once, we can run the command `drush migrate-import example_dog_i18n --update --execute-dependencies`. The `--execute-dependencies` parameter will ensure that the `base` migration runs before the `i18n` migration. Perfect!
 
 # Migrate creatures: Drupal 7 entity translations to Drupal 8
 
@@ -165,7 +164,7 @@ As we do with any other translated content migration, we will follow the same ol
 
 ## Element base migration (English)
 
-To achieve this, we define the [c11n_element_en](config/install/migrate_plus.migration.c11n_element_en.yml) migration to migrate element data in base language, which in our case is English (en). Here is a quick look at some important parameters used in the migration definition:
+To achieve this, we define the [example_element_en](config/install/migrate_plus.migration.example_element_en.yml) migration to migrate element data in base language, which in our case is English (en). Here is a quick look at some important parameters used in the migration definition:
 
 * **source:**
   * **plugin:** Since we want to import data from a CSV file, we need to use the _csv_ plugin provided by the [migrate_source_csv](https://www.drupal.org/project/migrate_source_csv) module.
@@ -182,24 +181,24 @@ To achieve this, we define the [c11n_element_en](config/install/migrate_plus.mig
   * **langcode:** Since all source records are in English, we inform Drupal to save the destination nodes in English as well. We do this by explicitly specifying `langcode` as `en`.
   * **field_element_discoverer:** This field is a bit tricky. Looking at the source, we realize that every element has one or more discoverers. Multiple discoverer names are separated by commas. Thus, we use `plugin: explode` and `delimiter: ', '` to split multiple records into arrays. With the values split into arrays, Drupal understands and saves the column data as multiple values.
 
-After we run this migration like `drush migrate-import c11n_element_en`, we get a list of all elements in the base language (English).
+After we run this migration like `drush migrate-import example_element_en`, we get a list of all elements in the base language (English).
 
 ## Element translation migration (Spanish)
 
-With the base nodes in place, we define a similar migration to the previous one with the ID [c11n_element_es](config/install/migrate_plus.migration.c11n_element_es.yml). Let us look at some major differences between the `c11n_element_es` migration and the `c11n_element_en` migration:
+With the base nodes in place, we define a similar migration to the previous one with the ID [example_element_es](config/install/migrate_plus.migration.example_element_es.yml). Let us look at some major differences between the `example_element_es` migration and the `example_element_en` migration:
 
 * **source:**
   * **path:** Since the Spanish node data is in another file, we change the path accordingly.
   * **keys:** The Spanish word for _Symbol_ is _Símbolo_ and it is the column containing the unique ID of each record. Hence, we define it as the source data key. A noteworthy observation here would be the special `í` in the word `Símbolo`. Since it is a special character, setting it as a `key` did not work. So, as a workaround, I had to remove all such accented characters from the column headings and write the `key` parameter as `Simbolo` without the special `í` with a normal `i`.
   * **fields:** The field definitions had to be changed to match the Spanish column names used in the CSV.
 * **destination:**
-  * **translations:** Since we want Drupal to create translations for English language nodes created during the `c11n_element_en` migration, we specify `translations: true`.
+  * **translations:** Since we want Drupal to create translations for English language nodes created during the `example_element_en` migration, we specify `translations: true`.
 * **process:**
   * **nid:** As mentioned above, we use the `plugin: migration` to make Drupal lookup nodes which were created during the English element migration and use their ID as the `nid`. This results in the Spanish translations being attached to the original nodes created in English.
   * **langcode:** Since all records in [element.data.es.csv](import/element/element.data.es.csv) are in Spanish, we hard-code the `langcode` to `es` for each record of this migration. This tell Drupal that these are _Spanish_ translations.
-* **migration_dependencies:** This ensures that the base data is migrated before the translations. So to run this migration, one must run the `c11n_element_en` migration first.
+* **migration_dependencies:** This ensures that the base data is migrated before the translations. So to run this migration, one must run the `example_element_en` migration first.
 
-Voilà! Run the Spanish migration like `drush migrate-import c11n_element_es` and you have the Spanish translations for the elements! If we had another file containing French translations, we would create another migration like we did for Spanish and import the French data in a similar way. I could not find a CSV with element data in French, so I could not include it in this example :(
+Voilà! Run the Spanish migration like `drush migrate-import example_element_es` and you have the Spanish translations for the elements! If we had another file containing French translations, we would create another migration like we did for Spanish and import the French data in a similar way. I could not find a CSV with element data in French, so I could not include it in this example :(
 
 # Things to remember
 

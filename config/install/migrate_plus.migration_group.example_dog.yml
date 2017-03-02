@@ -1,9 +1,9 @@
 # Migration group 'dog' migrations
-id: c11n_dog
+id: example_dog
 label: Dog migration
 description: Migration of dog data from Drupal 7 (content translations).
 source_type: Drupal 7 database
 dependencies:
   enforced:
     module:
-      - c11n_migrate_i18n
+      - migrate_example_i18n

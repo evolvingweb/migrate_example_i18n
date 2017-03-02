@@ -1,12 +1,12 @@
 # Migration of data from CSV into content type "element".
 #
-# Many configuration parameters are described in the 'c11n_hybrid_base' and
-# 'c11n_hybrid_i18n' migrations, refer to those for more information.
+# Many configuration parameters are described in the 'example_hybrid_base' and
+# 'example_hybrid_i18n' migrations, refer to those for more information.
 #
 # General metadata
-id: c11n_element_en
+id: example_element_en
 label: Element data in English
-migration_group: c11n_element
+migration_group: example_element
 migration_tags:
   - node
   - element
@@ -17,7 +17,7 @@ source:
   # 'migrate_source_csv' module. It provides a source with the ID 'csv.
   plugin: csv
   # Specify the name of the CSV file, which lives in the directory
-  # import/element. See c11n_migrate_i18n_migration_plugins_alter() for how
+  # import/element. See migrate_example_i18n_migration_plugins_alter() for how
   # this is found.
   path: 'element.data.en.csv'
   # Number of rows at the beginning which are not actual data.
@@ -58,4 +58,4 @@ process:
 dependencies:
   enforced:
     module:
-      - c11n_migrate_i18n
+      - migrate_example_i18n

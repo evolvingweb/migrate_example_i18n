@@ -3,14 +3,14 @@
 # This file demonstrates migration of content translated with
 # the D6 'content_translation' module.
 #
-# The untranslated data for "story" nodes comes from 'c11n_hybrid_base',
+# The untranslated data for "story" nodes comes from 'example_hybrid_base',
 # so refer to that before reading this.
 
 # Migration metadata
-id: c11n_hybrid_i18n
+id: example_hybrid_i18n
 label: Hybrid translations
 # Migrations can be organized into groups, one group per migration.
-migration_group: c11n_hybrid
+migration_group: example_hybrid
 # Migrations can also be organized by tags, potentially many tags per
 # migration.
 migration_tags:
@@ -43,11 +43,11 @@ destination:
 # This does the mapping between source fields and destination fields.
 process:
   type: constants/node_article
-  # The c11n_hybrid_base migrations has already created
+  # The example_hybrid_base migrations has already created
   # untranslated nodes. We want to add our translation
   # to that existing node. How do we do that?
   #
-  # The earlier c11n_hybrid_base migration identified each source
+  # The earlier example_hybrid_base migration identified each source
   # D6 node with its 'tnid' property. For each such node, it created
   # a D8 node, which has a 'nid'. Every time it did that, it recorded
   # a mapping between those values, eg:
@@ -61,7 +61,7 @@ process:
   # |     ...     |      ...        |
   # +-------------+-----------------+
   #
-  # In the current c11n_hybrid_i18n migration, we use the 'migration'
+  # In the current example_hybrid_i18n migration, we use the 'migration'
   # plugin. This means: when you see a D6 source node, find its tnid,
   # and look it up in the table above. Use the resulting nid for the
   # destination node.
@@ -72,7 +72,7 @@ process:
   nid:
     plugin: migration
     source: tnid
-    migration: c11n_hybrid_base
+    migration: example_hybrid_base
   langcode: language
   title: title
   'body/format': constants/body_format
@@ -84,12 +84,12 @@ process:
 # Migration dependencies
 #
 # This migration needs untranslated nodes to already exist, so
-# mark it as dependent on the c11n_hybrid_base migration.
+# mark it as dependent on the example_hybrid_base migration.
 migration_dependencies:
   required:
-    - c11n_hybrid_base
+    - example_hybrid_base
 # General dependencies
 dependencies:
   enforced:
     module:
-      - c11n_migrate_i18n
+      - migrate_example_i18n

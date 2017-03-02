@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\c11n_migrate_i18n\Plugin\migrate\source;
+namespace Drupal\migrate_example_i18n\Plugin\migrate\source;
 
 use \Drupal\Core\Database\Query\SelectInterface;
 use \Drupal\migrate\Row;

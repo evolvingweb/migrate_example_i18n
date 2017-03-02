@@ -9,9 +9,9 @@
 # if you are looking for detailed descriptions for various paramters.
 
 # Migration metadata
-id: c11n_creature_i18n
+id: example_creature_i18n
 label: Creature translations
-migration_group: c11n_creature
+migration_group: example_creature
 migration_tags:
   - node
   - article
@@ -42,7 +42,7 @@ process:
   # Attach the translation to the already migrated base node.
   nid:
     plugin: migration
-    migration: c11n_creature_base
+    migration: example_creature_base
     source: nid
   langcode: language
   # Another catch! Since we have used the 'title' module to
@@ -59,9 +59,9 @@ process:
 # Migration dependencies
 migration_dependencies:
   required:
-    - c11n_creature_base
+    - example_creature_base
 # General dependencies
 dependencies:
   enforced:
     module:
-      - c11n_migrate_i18n
+      - migrate_example_i18n

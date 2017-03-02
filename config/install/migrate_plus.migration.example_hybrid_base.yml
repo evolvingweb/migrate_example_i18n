@@ -7,10 +7,10 @@
 # file, so it's a good starting point.
 
 # Migration metadata
-id: c11n_hybrid_base
+id: example_hybrid_base
 label: Hybrid base data
 # Migrations can be organized into groups, one group per migration.
-migration_group: c11n_hybrid
+migration_group: example_hybrid
 # Migrations can also be organized by tags, potentially many tags per
 # migration.
 migration_tags:
@@ -24,7 +24,7 @@ source:
   # 'migrate_drupal' module.
   #
   # If you need additional functionality, you can create a custom
-  # plugin that extends this one. See the c11n_dog_base migration
+  # plugin that extends this one. See the example_dog_base migration
   # for an example of that.
   plugin: d6_node
   # The type of nodes we want to migrate.
@@ -78,4 +78,4 @@ process:
 dependencies:
   enforced:
     module:
-      - c11n_migrate_i18n
+      - migrate_example_i18n

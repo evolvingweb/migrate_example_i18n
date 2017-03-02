@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\c11n_migrate_i18n\Plugin\migrate\source;
+namespace Drupal\migrate_example_i18n\Plugin\migrate\source;
 
 use Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity;
 use \Drupal\node\Plugin\migrate\source\d7\Node as D7Node;
