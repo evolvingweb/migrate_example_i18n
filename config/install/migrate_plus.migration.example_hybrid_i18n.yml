@@ -9,10 +9,7 @@
 # Migration metadata
 id: example_hybrid_i18n
 label: Hybrid translations
-# Migrations can be organized into groups, one group per migration.
 migration_group: example_hybrid
-# Migrations can also be organized by tags, potentially many tags per
-# migration.
 migration_tags:
   - node
   - story

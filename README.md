@@ -11,16 +11,47 @@ In this project, we would briefly discuss how to migrate translated content into
 
 # Quick start
 
-* Download the files from this repo and put them in the `modules/custom/migrate_example_i18n` directory. `git clone https://github.com/jigarius/drupal-migration-example.git modules/custom/migrate_example_i18n`
-* Install the module. `drush en migrate_example_i18n -y`
-* Create source database for Drupal 6 / Drupal 7 examples and import the relevant SQL dump:
-  * For Drupal 6, import [dump/sandbox_d6.sql]
-  * For Drupal 7 content translations, import [dump/sandbox_d7_content.sql]
-  * For Drupal 7 entity translations, import [dump/sandbox_d7_entity.sql]
-* Configure additional databases in Drupal 8 - refer to [dump/settings.local.php]
-  * To avoid confusion, better to name the databases the same way I have named them. Otherwise, you might have to change certain parameters in the migration definitions.
-* See current status of the migrations. `drush migrate-status`
-* Run / re-run the migrations introduced by this module. `drush migrate-import MIGRATION-ID --update`. Make sure your replace `MIGRATION-ID` with the appropriate ID.
+* Put this module in your Drupal installation:
+
+    ```git clone https://github.com/evolvingweb/migrate_example_i18n.git modules/custom/migrate_example_i18n```
+
+* Install the module.
+
+    ```drush en migrate_example_i18n -y```
+
+* Configure Drupal to talk to a secondary database. For the Drupal 6 example, you can add something like this to your `settings.php`:
+
+    ```
+    $databases['drupal_6']['default'] = array(
+        'database' => 'migrate_i18n_d6',
+        'driver' => 'mysql',
+        'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+        'username' => 'root',
+        'password' => 'f00b@r',
+        'host' => '127.0.01',
+    );
+    ```
+    
+    Don't forget to modify the username, password and host!
+
+    You can add similar stanzas for the D7 examples, see [settings.local.php](dump/settings.local.php).
+
+* Create and populate your new source databases. Eg, for Drupal 6:
+    
+    ```
+    drush sql-create --database=drupal_6 --yes
+    drush sql-cli --database=drupal_6 < modules/custom/migrate_example_i18n/dump/sandbox_d6.sql
+    ```
+    
+    Again, you can do something similar for D7.
+
+* Check the current status of the migrations.
+
+    ```drush migrate-status```
+
+* Run some migrations introduced by this module. Eg, for Drupal 6:
+
+    ```drush migrate-import --group=example_hybrid --update```
 
 # The problem
 
