@@ -93,7 +93,7 @@ Before migrating translated content into Drupal 8, one must make sure that their
 
 # Migrate hybrids: Drupal 6 content translations to Drupal 8
 
-Since Drupal 6 is older, it looks like a better place to start. To get started, we create a migration group named [example_hybrid](config/install/migrate_plus.migration_group.example_hybrid.yml) (optional). This would let us execute all grouped migrations with one command like
+Since Drupal 6 is older, it looks like a better place to start. To get started, we create a migration group named [example_hybrid](config/install/migrate_plus.migration_group.example_hybrid.yml). This would let us execute all grouped migrations with one command like
 
     drush migrate-import --group=example_hybrid --update
 
@@ -104,8 +104,8 @@ Migrating translated content into Drupal 8 usually involves two steps:
 
 Before jumping into writing these migrations, it is important to mention that Drupal 6 and Drupal 8 translations work very differently. Here's the difference in a nutshell:
 
-* **Drupal 6:** First, you create a piece of content in it's base language. Then, you add a translation of it. However, when you create a translation, another fresh node is created with a different ID and a property named `tnid` is used to save the ID of the original node, thereby recording the fact that the node is a translation of another node. For language-neutral content the `tnid` is set to 0.
-* **Drupal 8:** First, you create a piece of content in it's base language. Then, you add a translation of it. When you create the translation, no new node is created. The translation is saved against the original node itself but measures are taken to save the translations in the other language.
+* **Drupal 6:** First, you create a piece of content in its base language. Then, you add a translation of it. However, when you create a translation, another fresh node is created with a different ID and a property named `tnid` is used to save the ID of the original node, thereby recording the fact that the node is a translation of another node. For language-neutral content the `tnid` is set to 0.
+* **Drupal 8:** First, you create a piece of content in its base language. Then, you add a translation of it. When you create the translation, no new node is created. The translation is saved against the original node itself but measures are taken to save the translations in the other language.
 
 Hence we follow the two step process for migrating translated content from Drupal 6.
 
