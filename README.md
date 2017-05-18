@@ -150,9 +150,7 @@ That's it! We can run our translation migration with `drush migrate-import examp
 
 # Migrate dogs: Drupal 7 content translations to Drupal 8
 
-Great! So another set of content translations! The good news is that content translations work the same was in Drupal 7 as they do in Drupal 6. However, at the time of writing text, we do not have good support for migrating translated content from Drupal 7 into Drupal 8. More precisely, a parameter named `translations` is not supported by the `d7_node` migration source plugin. Without the parameter, we do not have any easy method for importing only non-translated content or vice-versa. All migrations end up importing both non-translations and translations. Apart from that, everything works just like the Drupal 6 migration discussed above.
-
-But, the code must go on! Until the `translations` parameter or an equivalent is supported out of the box, we can create a custom source plugin like [D7NodeContentTranslation](src/Plugin/migrate/src/D7NodeContentTranslation.php). Here's a quick introduction to the class:
+Great! So another set of content translations! The good news is that content translations work the same way in Drupal 7 as they do in Drupal 6. Drupal 8.3.x and higher support D7 content translations out of the box. For older D8 versions, we can support the `translations` parameter with a custom source plugin like [D7NodeContentTranslation](src/Plugin/migrate/src/D7NodeContentTranslation.php). Here's a quick introduction to the class:
 
 * The class is derived from `\Drupal\node\Plugin\migrate\source\d7\Node` which would eventually support the `translations` parameter and make our lives easier.
 * The annotation `@MigrateSource` makes it available as a migration source plugin. The plugin ID being `d7_node_content_translation`.
