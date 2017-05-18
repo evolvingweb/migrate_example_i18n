@@ -15,7 +15,7 @@ migration_tags:
   - d7
 # Migration source
 source:
-  plugin: d7_node_content_translation
+  plugin: d7_node
   node_type: article
   # We deal only with translations in this migration.
   translations: true

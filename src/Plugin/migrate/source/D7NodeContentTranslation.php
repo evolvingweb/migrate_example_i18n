@@ -2,15 +2,19 @@
 
 namespace Drupal\migrate_example_i18n\Plugin\migrate\source;
 
-use \Drupal\Core\Database\Query\SelectInterface;
-use \Drupal\migrate\Row;
-use \Drupal\node\Plugin\migrate\source\d7\Node;
+use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\node\Plugin\migrate\source\d7\Node;
 
 /**
  * Drupal 7 node (article) source from database.
  *
- * We will use this source plugin for reading Drupal 7
- * nodes translated with the 'content_translation' module.
+ * This source class is no longer required because since Drupal 8.3.x, the core
+ * "d7_node" migration source supports content translation support.
+ *
+ * However, this source plugin might still be relevant for older versions of
+ * Drupal 8 where content translation is not supported.
+ *
+ * @deprecated
  *
  * @MigrateSource(
  *   id = "d7_node_content_translation"
@@ -19,6 +23,8 @@ use \Drupal\node\Plugin\migrate\source\d7\Node;
 class D7NodeContentTranslation extends Node {
 
   /**
+   * Add support for "translations" parameter.
+   *
    * This method is responsible for generating a query
    * which would eventually be used for discovering items
    * in the D7 install. The query is used for reading items

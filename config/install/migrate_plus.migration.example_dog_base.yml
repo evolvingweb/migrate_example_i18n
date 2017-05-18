@@ -18,15 +18,10 @@ migration_tags:
   - d7
 # Migration source
 source:
-  # Ignoring translations! The tricky part!
-  #
-  # The Drupal 7 version of the migration source Node does not
-  # support the "translations" parameter at this moment. Hence,
-  # even if you specify "translations: flase" (or omit that line),
-  # all nodes, including translations, are imported.
-  #
-  # To prevent this, I chose to write the method D7NodeContentTranslation::query().
-  plugin: d7_node_content_translation
+  # Since Drupal 8.3.x, Drupal 7 content translations are supported out of the
+  # box. However, if you are using an older version of Drupal 8, you can check
+  # out the D7NodeContentTranslation source plugin included in this module.
+  plugin: d7_node
   # The type of nodes we want to migrate.
   node_type: article
   # Specify source database.
