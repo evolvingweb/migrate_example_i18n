@@ -4,6 +4,7 @@ namespace Drupal\migrate_example_i18n\Plugin\migrate\source;
 
 use Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity;
 use Drupal\node\Plugin\migrate\source\d7\Node as D7Node;
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\migrate\Row;
 
 /**
@@ -43,26 +44,15 @@ class D7NodeEntityTranslation extends D7Node {
   }
 
   /**
-   * Build a query which finds D7 nodes, one per row.
-   *
-   * The query is used to read items during the migration, and to count
-   * items for the migration status.
-   *
-   * Since D7 Entity Translation works very differently from Content
-   * Translation, we have to modify the query quite significantly.
-   *
-   * @return \Drupal\Core\Database\Query\SelectInterface
-   *   The soure query.
+   * {@inheritdoc}
    */
-  public function query() {
-    // Start with the parent query and see if entity_translations
-    // are enabled for the nodes to be migrated.
-    $query = parent::query();
+  protected function handleTranslations(SelectInterface $query) {
+    // If entity translations are not enabled, do nothing.
     if (!$this->isEntityTranslatable()) {
-      return $query;
+      return;
     }
 
-    // Entity Translation data is kept in the entity_translation table.
+    // Entity translation data is kept in the entity_translation table.
     $query->join('entity_translation', 'et',
       "et.entity_type = :entity_type AND et.entity_id = n.nid",
       [':entity_type' => 'node']
@@ -87,14 +77,15 @@ class D7NodeEntityTranslation extends D7Node {
       unset($fields[$alias]);
       $query->addField('et', $et_column, $alias);
     }
-
-    return $query;
   }
 
   /**
    * Adds additional data to the row.
    *
    * Overridden to pass the $language argument to getFieldValues().
+   *
+   * @todo This should be supported by parent::prepareRow(). Once it is there,
+   *   we won't have to override the method.
    *
    * @param \Drupal\Migrate\Row $row
    *   The row object.
@@ -111,7 +102,6 @@ class D7NodeEntityTranslation extends D7Node {
       // Get field values.
       $row->setSourceProperty($field, $this->getFieldValues('node', $field, $nid, $vid, $language));
     }
-
     return FieldableEntity::prepareRow($row);
   }
 
@@ -120,6 +110,9 @@ class D7NodeEntityTranslation extends D7Node {
    *
    * Overridden to support the $language argument, so that we can retrieve
    * values for a specific languages.
+   *
+   * @todo This should be supported by parent::prepareRow(). Once it is there,
+   *   we won't have to override the method.
    *
    * @param string $entity_type
    *   The entity type.
