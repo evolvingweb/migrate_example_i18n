@@ -3,8 +3,8 @@
 namespace Drupal\migrate_example_i18n\Plugin\migrate\source;
 
 use Drupal\migrate_drupal\Plugin\migrate\source\d7\FieldableEntity;
-use \Drupal\node\Plugin\migrate\source\d7\Node as D7Node;
-use \Drupal\migrate\Row;
+use Drupal\node\Plugin\migrate\source\d7\Node as D7Node;
+use Drupal\migrate\Row;
 
 /**
  * Drupal 7 node migrate source.
