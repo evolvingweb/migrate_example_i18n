@@ -163,7 +163,7 @@ Apart from that, we have everything going just the way we did for Drupal 6.
 
 ## Dog base migration
 
-We define a [example_dog_base](config/install/migrate_plus.migration.example_dog_base.yml) migration to migrate all non-translations first. This includes base translations and language-neutral content.
+We define a [example_dog_base](config/install/migrate_plus.migration.example_dog_base.yml) migration to migrate all non-translations first.
 
 * We use our `d7_node_content_translation` plugin as the `source` plugin.
 * We do not declare `translations` parameter for the `source` plugin, so that only non-translations are read from Drupal 7.
@@ -175,14 +175,64 @@ We define a [example_dog_i18n](config/install/migrate_plus.migration.example_dog
 
 * We use our `d7_node_content_translation` plugin as the `source` plugin.
 * We define `translations: true` for the source plugin so that only translated nodes are read from Drupal 7
-* We define `translations: true` for the destination plugin so that instead of the data is migrated as translations for nodes created during the base migration.
+* We define `translations: true` for the destination plugin so that the data is migrated as translations for nodes created during the base migration.
 * We make sure that the `i18n` migration depends on the `base` migration.
 
-That's it! We can run the base and i18n migrations one by one and all Drupal 7 nodes would be imported to Drupal 8 along with their translations. To execute both the migrations at once, we can run the command `drush migrate-import example_dog_i18n --update --execute-dependencies`. The `--execute-dependencies` parameter will ensure that the `base` migration runs before the `i18n` migration. Perfect!
+That's it! We can run the base and i18n migrations one by one and all Drupal 7 nodes would be imported to Drupal 8 along with their translations. To execute both the migrations at once, we can run the command `drush migrate-import --group=example_dog --update`.  Perfect!
 
 # Migrate creatures: Drupal 7 entity translations to Drupal 8
 
-Coming soon
+Entity translations! Amazing! Drupal 7 content translations are supported since Drupal 8.3. At the point of writing this, there is no standard method for migrating entity translations to Drupal 8. In this example, we will migrate D7 nodes translated with the [entity_translation](https://www.drupal.org/project/entity_translation) module. The procedure should be similar for other node types as well. Before we start, here are some notes about what's so different about entity translations:
+
+* All translations have the same `entity_id`. So, for a translated node, the entity_translation module will result in only one entry in the `node` table.
+* Translation information and revisions for entities is stored in the `entity_translation` table. So if an English node with ID 19 has translations in Spanish and French, the `entity_translations` table has the following records:
+  * `entity_type: node; entity_id: 19; language: en; ...`
+  * `entity_type: node; entity_id: 19; language: es; ...`
+  * `entity_type: node; entity_id: 19; language: fr; ...`
+
+The above data structure is significantly different from the content translation structure. In fact, Drupal 8 handles translations much like the entity translation module!
+
+## class D7NodeEntityTranslation
+
+To migrate entity translations, we must make significant number of changes to the migration source (at least at the time of writing this). We need to migrate Drupal 7 nodes, so we extend the `d7_node` migration source.
+
+    class D7NodeEntityTranslation extends D7Node {
+      // Determines if the node-type being translated supports entity_translation.
+      protected function isEntityTranslatable() {}
+      // Depending on the "source/translations" parameter, this method alters
+      // the migration query to return only translations or non-translations.
+      protected function handleTranslations(SelectInterface $query) {}
+      // This method has been overridden to ensure that every node's fields are
+      // are loaded in the correct language.
+      public function prepareRow(Row $row) {}
+      // This method is called by the prepareRow() method to load field values
+      // for source nodes. We override this method to add support for $language.
+      protected function getFieldValues($entity_type, $field, $entity_id, $revision_id = NULL, $language = NULL) {}
+      // Since all source nodes have the same "nid", we need to use a
+      // combination of "nid:language" to distinguish each source translation.
+      public function getIds() {}
+    }
+
+With the above source class in place, we write our migrations as usual.
+
+## Creature base migration
+
+We define a [example_creature_base](config/install/migrate_plus.migration.example_creature_base.yml) migration to migrate all non-translations first.
+
+* We use our `d7_node_entity_translation` plugin as the `source` plugin to handle entity translations correctly.
+* We do not declare `translations` parameter for the `source` plugin, so that only non-translations are read from Drupal 7.
+* We do not declare `translations` parameter for the `destination` plugin. Thus, separate Drupal 8 nodes will be generated for every Drupal 7 node.
+
+## Creature translation migration
+
+We define a [example_creature_i18n](config/install/migrate_plus.migration.example_creature_i18n.yml) migration to migrate all translations.
+
+* We use our `d7_node_entity_translation` plugin as the `source` plugin to handle entity translations correctly.
+* We define `translations: true` for the source plugin so that only translated nodes are read from Drupal 7
+* We define `translations: true` for the destination plugin so that the data is migrated as translations for nodes created during the base migration.
+* We make sure that the `i18n` migration depends on the `base` migration.
+
+That's it! We can run the base and i18n migrations one by one and all Drupal 7 nodes would be imported to Drupal 8 along with their translations. To execute both the migrations at once, we can run the command `drush migrate-import --group=example_creature --update`. Perfect!
 
 # Migrate elements: Non-drupal translated content to Drupal 8
 
