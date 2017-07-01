@@ -2,11 +2,12 @@
 name: 'Migrate Example (multilingual)'
 description: Examples of multilingual migrations.
 type: module
-core: 8.3.x
+core: 8.x
 package: Examples
 
 # Dependencies
 dependencies:
+  - drupal:system (>=8.3)
   - migrate
   - migrate_drupal
   - migrate_plus
