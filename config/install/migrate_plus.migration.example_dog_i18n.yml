@@ -34,7 +34,7 @@ destination:
 process:
   # Attach the translation to the already migrated base node.
   nid:
-    plugin: migration
+    plugin: migration_lookup
     migration: example_dog_base
     source: tnid
   type: constants/node_article
