@@ -51,7 +51,7 @@ destination:
 process:
   # Attach the translation to the already-migrated node.
   nid:
-    plugin: migration
+    plugin: migration_lookup
     source: Simbolo
     migration: example_element_en
   # For the rest of the fields, migrate them as is.
